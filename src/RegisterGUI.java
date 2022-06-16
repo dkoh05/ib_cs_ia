@@ -148,28 +148,27 @@ public class RegisterGUI implements ActionListener{
 				return;
 			} 
 			
-			String query = "SELECT username, password FROM user WHERE username=?";
+			String query = "SELECT username, password FROM user WHERE username=?"; 
 			String insertQuery = "INSERT INTO user values (?,?,?,?,?)";
 			
 			
-			Connection con = SQLConnect.connect();
+			Connection con = SQLConnect.connect(); // connect to master.db database
 			
 			try {
-				PreparedStatement stmt = con.prepareStatement(query);
+				PreparedStatement stmt = con.prepareStatement(query); // create a statement variable to store the query
 				stmt.setString(1, username); // replace parameters
-				ResultSet rs = stmt.executeQuery();
-				
+				ResultSet rs = stmt.executeQuery(); //  values into into database
 				// check if there are duplicate accounts
 				int count = 0;
-				String user = "";
-				while(rs.next()) {
-					user = rs.getString("username");
+				while(rs.next()) { // retrieve all rows in rs
 					count++;
 				}
+				
 				if(count != 0) {
 					success.setText("Duplicate user, cannot register");
 					return;
 				} 
+				
 				// insert account details into sql database
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
 				insertStmt.setString(1,username);
@@ -177,10 +176,9 @@ public class RegisterGUI implements ActionListener{
 				insertStmt.setString(3, fullName);
 				insertStmt.setString(4, email);
 				insertStmt.setString(5, phoneNum);
-				System.out.println(insertStmt);
-				int rowCount = insertStmt.executeUpdate(); // executeUpdate return either positive integer or 0
-				if(rowCount == 0) {
-					success.setText("execute update error");
+				int rowCount = insertStmt.executeUpdate(); // execute the insert statement; return either the number of rows inserted successfuly or return zero if nothing inserted
+				if(rowCount == 0) { // internal error
+					success.setText("execute update error"); 
 					return;
 				}
 				

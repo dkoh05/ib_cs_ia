@@ -50,7 +50,7 @@ public class ReservationGUI implements ActionListener {
 	
 	String username = "";
 
-//	
+
 	
 	
 	ReservationGUI(String us){
@@ -113,6 +113,7 @@ public class ReservationGUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == bookBtn) {
+			// get values from user
 			int guestNum = (Integer) guestNumSpinner.getValue();
 			LocalDate checkinDate = checkinDatePicker.getDate();
 			String checkinDateString = checkinDate.toString();
@@ -124,11 +125,12 @@ public class ReservationGUI implements ActionListener {
 			String checkoutTimeString = checkoutTime.toString();
 			String note = noteText.getText();
 			
-			
+			// check number of guests
 			if(guestNum<1 || guestNum > 10) {
 				success.setText("Only a number between 1 to 10 guests allowed!");
 				return;
 			}
+			// validate if check-in is greater than check-out time 
 			if((checkoutDate.compareTo(checkinDate)) < 0) {
 				success.setText("Check-in date is greater than the check-out date!");
 				return;
