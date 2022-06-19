@@ -74,14 +74,14 @@ public class LoginGUI implements ActionListener {
 	// validation
 	public void actionPerformed(ActionEvent e) {
 		
-		if(e.getSource() == loginBtn) {
+		if(e.getSource() == loginBtn) { // user click 'login' button
 			// get the username and password from the textbox
 			String username = userText.getText().toLowerCase();
 			String password = passwordText.getText();
 
 			// username length check
 			if (username.length() < 3) {
-				success.setText("validation failed");
+				success.setText("validation failed"); 
 				return;
 			}
 			// password length check
@@ -90,10 +90,7 @@ public class LoginGUI implements ActionListener {
 				return;
 			}
 
-			System.out.println(username + "," + password);
-
-			String query = "SELECT username, password FROM user WHERE username=?"; // query to match inputted username with
-																					// username in database
+			String query = "SELECT username, password FROM user WHERE username=?"; // query to match inputted username with username in database
 
 			Connection con = SQLConnect.connect(); // connect to database
 			try {
@@ -106,7 +103,6 @@ public class LoginGUI implements ActionListener {
 				String pass = "";
 				while (rs.next()) {
 					pass = rs.getString("password"); // gets the password in the query
-					System.out.println(pass);
 					count++;
 				}
 				System.out.println(count);

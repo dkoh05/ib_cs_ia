@@ -110,7 +110,7 @@ public class RegisterGUI implements ActionListener{
 			String phoneNum = phoneNumText.getText();
 			String email = emailText.getText();
 			
-// validation on each text field
+			// validation on each text field
 			// username/password length check
 			if (username.length() < 3 || password.length() < 8) {
 				success.setText("Username/password not long enough");
@@ -121,6 +121,7 @@ public class RegisterGUI implements ActionListener{
 				success.setText("Your confirmation password doesn't match with your password.");
 				return;
 			}
+			// full name presense check
 			if(fullName.length() <= 0) {
 				success.setText("No name");
 				return;
@@ -185,9 +186,6 @@ public class RegisterGUI implements ActionListener{
 			} catch(Exception e2) {
 				e2.printStackTrace();
 			}
-			
-	
-			
 			success.setText("Successful sign-up!");
 			frame.dispose();
 			WelcomePage welcomePage = new WelcomePage(username);

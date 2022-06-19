@@ -44,6 +44,7 @@ public class WelcomePage implements ActionListener {
 		panel.add(makeBkgBtn);
 
 		try {
+			// tick icon 
 			BufferedImage tickImg = ImageIO.read(new File("src//tick_icon.png"));
 			JLabel tickLabel = new JLabel(new ImageIcon(tickImg));
 			tickLabel.setBounds(488, 200, 225, 225);
@@ -59,13 +60,16 @@ public class WelcomePage implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getSource() == logoutBtn) {
+		if(e.getSource() == logoutBtn) { // user click 'logout' button
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(); 
+			// close welcome page and open login page
 			
-		} else if (e.getSource() == makeBkgBtn) {
+		} else if (e.getSource() == makeBkgBtn) { 
 			frame.dispose();
 			ReservationGUI reservationPage = new ReservationGUI(username);
+			// close welcome page and open reservation page
+			
 		}
 
 	}

@@ -151,6 +151,9 @@ public class ReservationGUI implements ActionListener {
 			Connection con = SQLConnect.connect();
 			
 			try {
+				// check if booking is available/not overlap with other booking
+				
+				
 				// insert
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
 				insertStmt.setInt(1, guestNum);
@@ -165,6 +168,7 @@ public class ReservationGUI implements ActionListener {
 					success.setText("execute update error");
 					return;
 				}
+				
 			}
 			catch (Exception e3){
 				e3.printStackTrace();

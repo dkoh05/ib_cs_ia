@@ -8,8 +8,8 @@ public class SQLConnect {
     public static Connection connect() {
         Connection conn = null;
         try {
-            // db parameters
-            String url = "jdbc:sqlite:C:/sqlite/master.db";
+            // database parameters
+            String url = "jdbc:sqlite:C:/sqlite/master.db"; // link to the database
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             
