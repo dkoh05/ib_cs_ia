@@ -1,12 +1,12 @@
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class NoRecieptEndpage {
+public class YesRecieptGUI {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	
-	NoRecieptEndpage(){
-		frame.setSize(1200, 900);
+	YesRecieptGUI(){
+		frame.setSize(450, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);

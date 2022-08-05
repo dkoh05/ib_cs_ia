@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JSpinner;
@@ -149,11 +150,30 @@ public class ReservationGUI implements ActionListener {
 			
 			
 			Connection con = SQLConnect.connect();
+			String query = "select * from reservation where ? BETWEEN checkin_date AND checkout_date OR ? BETWEEN checkin_date AND checkout_date "
+					+ "OR ? > checkin_date AND ? < checkout_date "
+					+ "OR ? < checkin_date AND ? > checkout_date;";
 			
 			try {
 				// check if booking is available/not overlap with other booking
+				PreparedStatement stmt = con.prepareStatement(query);
+				stmt.setString(1, checkoutDateString);
+				stmt.setString(2, checkinDateString);
+				stmt.setString(3, checkinDateString);
+				stmt.setString(4, checkoutDateString);
+				stmt.setString(5, checkinDateString);
+				stmt.setString(6, checkoutDateString);
 				
+				ResultSet rs = stmt.executeQuery();
 				
+				int count = 0;
+				while(rs.next()) {
+					count++;
+				}
+				if(count !=0) {
+					success.setText("An existing reservation is overlapping with the inputted reservation!");
+					return;
+				}
 				// insert
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
 				insertStmt.setInt(1, guestNum);
@@ -174,8 +194,19 @@ public class ReservationGUI implements ActionListener {
 				e3.printStackTrace();
 			}
 			success.setText("Successful reservation!");
-			// close page
-			// open a AskReciept page
+			// opening a frame asking user if they want reciept
+			Object[] options = { "Yes, please", "No, thanks"};
+			int popup = JOptionPane.showOptionDialog(frame, "Would you like a reciept of your reservation? ",
+					"", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+					options[1]);
+			if(popup == JOptionPane.YES_OPTION) {
+				frame.dispose();
+				YesRecieptGUI yes_reciept = new YesRecieptGUI();
+			} else { 
+				frame.dispose();
+				NoRecieptGUI no_reciept = new NoRecieptGUI();
+				
+			}
 			
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();

@@ -66,9 +66,10 @@ public class WelcomePage implements ActionListener {
 			// close welcome page and open login page
 			
 		} else if (e.getSource() == makeBkgBtn) { 
+			// close welcome page and open reservation page
 			frame.dispose();
 			ReservationGUI reservationPage = new ReservationGUI(username);
-			// close welcome page and open reservation page
+
 			
 		}
 
