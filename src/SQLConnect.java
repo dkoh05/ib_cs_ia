@@ -9,7 +9,7 @@ public class SQLConnect {
         Connection conn = null;
         try {
             // database parameters
-            String url = "jdbc:sqlite:C:/Users/dykoh/OneDrive/Documents/CS/Java/ReservationBookingProgram/sqlite/master.db"; // link to the database
+            String url = System.getenv("DB_URL"); // link to the database
             // create a connection to the database
             conn = DriverManager.getConnection(url);
             
