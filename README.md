@@ -1,4 +1,4 @@
-# How to run and open the code
+# How to run and open the code (assuming you're using Eclipse)
 
 ### 1. Clone the code from Github
 ### 2. Open Eclipse (assuming they have Eclipse downloaded)
@@ -14,5 +14,9 @@
 - choose filepath of the LGoodDatePicker and the sqlite file, click 'Open'
 - click 'Apply and Close' 
 
-### 5. Go to src file --> default package --> SQLConnect.java file, change the filepath to the database path
-### 6. 
+### 5. Set up environment variable(s)
+- Go to 'Run Config.' --> 'Environment' tab --> click on 'Add' button
+- Type your variable name and the value (which is the path to your database file)
+	Note: Set the name as 'DB_URL' and the value depending on your path to database file. 
+	The format of 'value': `jdbc:sqlite:<path>`
+	
