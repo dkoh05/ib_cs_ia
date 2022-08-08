@@ -200,14 +200,10 @@ public class ReservationGUI implements ActionListener {
 					"", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
 					options[1]);
 			if(popup == JOptionPane.YES_OPTION) {
-				frame.dispose();
-				YesRecieptGUI yes_reciept = new YesRecieptGUI();
-			} else { 
-				frame.dispose();
-				NoRecieptGUI no_reciept = new NoRecieptGUI();
-				
-			}
-			
+				// send email
+			} 
+			frame.dispose();
+			ThankYouGUI thankyou_page = new ThankYouGUI(username);
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();

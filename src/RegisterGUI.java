@@ -32,6 +32,7 @@ public class RegisterGUI implements ActionListener{
 	JLabel emailLabel = new JLabel("E-mail address: ");
 	JTextField emailText = new JTextField();
 	JButton signupBtn = new JButton("Sign-up");
+	JButton loginBtn = new JButton("Log-In");
 	JLabel success = new JLabel("");
 	
 	RegisterGUI(){
@@ -91,6 +92,10 @@ public class RegisterGUI implements ActionListener{
 		signupBtn.addActionListener(this);
 		panel.add(signupBtn);
 		
+		loginBtn.setBounds(150, 290, 100, 25);
+		loginBtn.addActionListener(this);
+		panel.add(loginBtn);
+		
 		success.setBounds(10, 320, 300, 25);
 		panel.add(success);
 		success.setText(null);
@@ -101,6 +106,10 @@ public class RegisterGUI implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == loginBtn) {
+			frame.dispose();
+			LoginGUI loginPage = new LoginGUI();
+		}
 		if(e.getSource() == signupBtn) {
 			// get input from textbook 
 			String username = usernameText.getText().toLowerCase();
@@ -112,6 +121,7 @@ public class RegisterGUI implements ActionListener{
 			
 			// validation on each text field
 			// username/password length check
+			
 			if (username.length() < 3 || password.length() < 8) {
 				success.setText("Username/password not long enough");
 				return;
