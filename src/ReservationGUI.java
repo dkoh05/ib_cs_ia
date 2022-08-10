@@ -104,7 +104,7 @@ public class ReservationGUI implements ActionListener {
 		bookBtn.addActionListener(this);
 		panel.add(bookBtn);
 		
-		success.setBounds(10, 400, 165, 25);
+		success.setBounds(10, 400, 700, 25);
 		panel.add(success);
 		
 		username = us;
