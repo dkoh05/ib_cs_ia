@@ -89,8 +89,9 @@ public class LoginGUI implements ActionListener {
 				success.setText("validation failed");
 				return;
 			}
+			
 
-			String query = "SELECT username, password FROM user WHERE username=?"; // query to match inputted username with username in database
+			String query = "SELECT username, password, role FROM user WHERE username=?"; // query to match inputted username with username in database
 
 			Connection con = SQLConnect.connect(); // connect to database
 			try {
@@ -101,15 +102,21 @@ public class LoginGUI implements ActionListener {
 				int count = 0; // counter for number for records in the rs
 
 				String pass = "";
+				String role = "";
 				while (rs.next()) {
 					pass = rs.getString("password"); // gets the password in the query
+					role = rs.getString("role");
 					count++;
 				}
-				System.out.println(count);
 				if (count != 0 && pass.equals(password)) { // presense checking
+					if(role.equals("guest")) {
+						frame.dispose();
+						WelcomePage welcomePage = new WelcomePage(username);
+					} else if(role.equals("admin")) {
+						frame.dispose();
+						System.out.println("open admin page");
+					}
 					success.setText("Login success!");
-					frame.dispose();
-					WelcomePage welcomePage = new WelcomePage(username); // create a welcome page once logged in
 				} else {
 					success.setText("Login failure");
 					return;

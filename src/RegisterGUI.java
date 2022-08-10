@@ -160,7 +160,7 @@ public class RegisterGUI implements ActionListener{
 			} 
 			
 			String query = "SELECT username, password FROM user WHERE username=?"; 
-			String insertQuery = "INSERT INTO user values (?,?,?,?,?)";
+			String insertQuery = "INSERT INTO user values (?,?,?,?,?,?)";
 			
 			
 			Connection con = SQLConnect.connect(); // connect to master.db database
@@ -187,6 +187,8 @@ public class RegisterGUI implements ActionListener{
 				insertStmt.setString(3, fullName);
 				insertStmt.setString(4, email);
 				insertStmt.setString(5, phoneNum);
+				insertStmt.setString(6, "guest");
+				
 				int rowCount = insertStmt.executeUpdate(); // execute the insert statement; return either the number of rows inserted successfuly or return zero if nothing inserted
 				if(rowCount == 0) { // internal error
 					success.setText("execute update error"); 
