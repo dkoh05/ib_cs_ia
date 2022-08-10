@@ -29,7 +29,8 @@ public class ThankYouGUI implements ActionListener {
 		frame.add(panel);
 		panel.setLayout(null);
 		
-
+		username = us;
+		
 		thankyouLabel.setBounds(400, 475, 500, 20);
 		panel.add(thankyouLabel);
 		
