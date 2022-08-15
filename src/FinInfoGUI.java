@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-public class PendingOrderGUI implements ActionListener{
+public class FinInfoGUI implements ActionListener{
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	
@@ -18,7 +18,7 @@ public class PendingOrderGUI implements ActionListener{
 	private static JButton logoutBtn = new JButton("LOGOUT");
 	
 	
-	PendingOrderGUI(){
+	FinInfoGUI(){
 		frame.setSize(1200, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +27,6 @@ public class PendingOrderGUI implements ActionListener{
 		
 		pendingOrderBtn.setBounds(100,45,175,25);
 		pendingOrderBtn.addActionListener(this);
-		pendingOrderBtn.setBackground(Color.LIGHT_GRAY);
 		panel.add(pendingOrderBtn);
 		
 		orderHistoryBtn.setBounds(350, 45,175,25);
@@ -36,6 +35,7 @@ public class PendingOrderGUI implements ActionListener{
 		
 		finInfoBtn.setBounds(600,45,175,25);
 		finInfoBtn.addActionListener(this);
+		finInfoBtn.setBackground(Color.LIGHT_GRAY);
 		panel.add(finInfoBtn);
 		
 		usersListBtn.setBounds(850,45,175,25);
@@ -53,12 +53,12 @@ public class PendingOrderGUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == orderHistoryBtn) {
+		if(e.getSource() == pendingOrderBtn) {
+			frame.dispose();
+			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
+		} else if(e.getSource() == orderHistoryBtn) {
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
-		} else if(e.getSource() == finInfoBtn) {
-			frame.dispose();
-			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if(e.getSource() == usersListBtn) {
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
