@@ -145,8 +145,8 @@ public class ReservationGUI implements ActionListener {
 				return;
 			}
 			
-			String insertQuery = "INSERT INTO reservation (guest_num, checkin_date, checkin_time, checkout_date, checkout_time, note, username ) "
-					+ "values (?,?,?,?,?,?,?)";
+			String insertQuery = "INSERT INTO reservation (guest_num, checkin_date, checkin_time, checkout_date, checkout_time, note, username, is_completed) "
+					+ "values (?,?,?,?,?,?,?,?)";
 			
 			
 			Connection con = SQLConnect.connect();
@@ -183,6 +183,7 @@ public class ReservationGUI implements ActionListener {
 				insertStmt.setString(5, checkoutTimeString);
 				insertStmt.setString(6, note);
 				insertStmt.setString(7, username);
+				insertStmt.setInt(8, 0);
 				int rowCount = insertStmt.executeUpdate();
 				if(rowCount ==0) {
 					success.setText("execute update error");

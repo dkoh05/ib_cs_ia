@@ -81,12 +81,12 @@ public class LoginGUI implements ActionListener {
 
 			// username length check
 			if (username.length() < 3) {
-				success.setText("validation failed"); 
+				success.setText("Username is not long enough!"); 
 				return;
 			}
 			// password length check
 			if (password.length() < 8) {
-				success.setText("validation failed");
+				success.setText("Password is not long enough!");
 				return;
 			}
 			
@@ -114,11 +114,11 @@ public class LoginGUI implements ActionListener {
 						WelcomePage welcomePage = new WelcomePage(username);
 					} else if(role.equals("admin")) {
 						frame.dispose();
-						System.out.println("open admin page");
+						PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 					}
-					success.setText("Login success!");
+					success.setText("Successful login!");
 				} else {
-					success.setText("Login failure");
+					success.setText("Failed login! Please try again.");
 					return;
 				}
 				con.close();
