@@ -166,6 +166,7 @@ public class ReservationGUI implements ActionListener {
 				
 				ResultSet rs = stmt.executeQuery();
 				
+				// check if there is an existing reservation
 				int count = 0;
 				while(rs.next()) {
 					count++;

@@ -3,12 +3,16 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import java.sql.Connection;
 
 
 public class PendingOrderGUI implements ActionListener{
@@ -51,16 +55,43 @@ public class PendingOrderGUI implements ActionListener{
 		panel.add(logoutBtn);
 		
 		// change the data and column names to correspond with database
-        String[][] data = {
-                { "Kundan Kumar Jha", "4031", "CSE", "", "", "", "", ""},
-                { "Anand Jha", "6014", "IT", "", "", "", "", ""}
-            };
+
         
+		Connection con = SQLConnect.connect();
+		
+		String query = "SELECT * from reservation where is_completed = 0;";
+		
+		String[][] pendingOrders = new String[1000][7];
+		
+		
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			int count = 0;
+			
+			while(rs.next()) {
+				String username = rs.getString("username");
+				String guestNum = rs.getString("guest_num");
+				String checkinDate = rs.getString("checkin_date");
+				String checkinTime = rs.getString("checkin_time");
+				String checkoutDate = rs.getString("checkout_date");
+				String checkoutTime = rs.getString("checkout_time");
+				String note = rs.getString("note");
+				String[] row = {username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note};
+				pendingOrders[count] = row;
+				count++;
+			}
+		} catch (Exception e4) {
+			e4.printStackTrace();
+		}
+		
+		
+		
         
         // Column Names
-        String[] columnNames = {"Name", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date", "Check-out Time", "Note", "Username"};
+        String[] columnNames = {"Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date", "Check-out Time", "Note"};
 		
-		JTable table = new JTable(data, columnNames);
+		JTable table = new JTable(pendingOrders, columnNames);
 //		table.setBounds(100, 500, 900, 400);
 		
 //		table.setPreferredScrollableViewportSize(new Dimension(500, 50));
@@ -91,8 +122,8 @@ public class PendingOrderGUI implements ActionListener{
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}
+
 		
-		String query = "";
 		
 		
 	}
