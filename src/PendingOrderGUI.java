@@ -61,7 +61,7 @@ public class PendingOrderGUI implements ActionListener{
 		
 		String query = "SELECT * from reservation where is_completed = 0;";
 		
-		String[][] pendingOrders = new String[1000][7];
+		String[][] pendingOrders = new String[1000][8];
 		
 		
 		try {
@@ -70,6 +70,7 @@ public class PendingOrderGUI implements ActionListener{
 			int count = 0;
 			
 			while(rs.next()) {
+				String id = rs.getString("id");
 				String username = rs.getString("username");
 				String guestNum = rs.getString("guest_num");
 				String checkinDate = rs.getString("checkin_date");
@@ -77,7 +78,7 @@ public class PendingOrderGUI implements ActionListener{
 				String checkoutDate = rs.getString("checkout_date");
 				String checkoutTime = rs.getString("checkout_time");
 				String note = rs.getString("note");
-				String[] row = {username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note};
+				String[] row = {id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note};
 				pendingOrders[count] = row;
 				count++;
 			}
@@ -89,7 +90,7 @@ public class PendingOrderGUI implements ActionListener{
 		
         
         // Column Names
-        String[] columnNames = {"Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date", "Check-out Time", "Note"};
+        String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date", "Check-out Time", "Note"};
 		
 		JTable table = new JTable(pendingOrders, columnNames);
 //		table.setBounds(100, 500, 900, 400);
