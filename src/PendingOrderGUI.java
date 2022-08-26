@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -173,12 +174,25 @@ public class PendingOrderGUI implements ActionListener {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int index = table.getSelectedRow();
-				System.out.println("debug" + index);
+				guestNameText.setText(pendingOrders[index][1]);
+				String checkinDate = pendingOrders[index][3];
+				LocalDate localCheckinDate = LocalDate.parse(checkinDate);
+				checkinDatePicker.setDate(localCheckinDate);
+				checkinTimePicker.setText(pendingOrders[index][4]);
+				String checkoutDate = pendingOrders[index][5];
+				LocalDate localCheckoutDate = LocalDate.parse(checkoutDate);
+				checkoutDatePicker.setDate(localCheckoutDate);
+				checkoutTimePicker.setText(pendingOrders[index][6]);
+				noteText.setText(pendingOrders[index][7]);
+				
+				
 			}
 		});
 
 		sp.setBounds(100, 100, 900, 400);
 		panel.add(sp);
+		
+		
 
 		frame.add(panel);
 		frame.setVisible(true);
