@@ -185,6 +185,7 @@ public class PendingOrderGUI implements ActionListener {
 				checkoutTimePicker.setText(pendingOrders[index][6]);
 				noteText.setText(pendingOrders[index][7]);
 				
+				guestNameText.setEditable(false);
 				
 			}
 		});
