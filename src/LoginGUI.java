@@ -17,51 +17,54 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 public class LoginGUI implements ActionListener {
-
+	JLabel welcomeLabel = new JLabel("Welcome to Duyen's Home Booking! Please log-in to your account!");
 	private static JLabel usernameLabel = new JLabel("Username:");
-	private static JTextField userText = new JTextField(20);
-	private static JLabel passwordLabel = new JLabel("Password:");
-	private static JTextField passwordText = new JPasswordField(20);
-	private static JButton loginBtn = new JButton("Login");
-	private static JLabel success = new JLabel("");
-	private static JButton registerBtn = new JButton("Register");
+	JTextField userText = new JTextField(20);
+	JLabel passwordLabel = new JLabel("Password:");
+	JTextField passwordText = new JPasswordField(20);
+	JButton loginBtn = new JButton("Login");
+	JLabel success = new JLabel("");
+	JButton registerBtn = new JButton("Register");
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
 	LoginGUI() {
 
-		frame.setSize(450, 200);
+		frame.setSize(450, 250);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 
 		panel.setLayout(null);
+		
+		welcomeLabel.setBounds(10, 5, 450, 25);
+		panel.add(welcomeLabel);
 
-		usernameLabel.setBounds(10, 20, 80, 25);
+		usernameLabel.setBounds(10, 50, 80, 25);
 		panel.add(usernameLabel);
 
-		userText.setBounds(100, 20, 165, 25);
+		userText.setBounds(100, 50, 165, 25);
 		Border line = BorderFactory.createLineBorder(Color.black, 1);
 		userText.setBorder(line);
 		panel.add(userText);
 
-		passwordLabel.setBounds(10, 60, 80, 25);
+		passwordLabel.setBounds(10, 90, 80, 25);
 		panel.add(passwordLabel);
 
-		passwordText.setBounds(100, 60, 165, 25);
+		passwordText.setBounds(100, 90, 165, 25);
 		passwordText.setBorder(line);
 		panel.add(passwordText);
 
-		loginBtn.setBounds(10, 90, 100, 25);
+		loginBtn.setBounds(10, 140, 100, 25);
 		loginBtn.addActionListener(this);
 		panel.add(loginBtn);
 //		
 		registerBtn = new JButton("Register");
-		registerBtn.setBounds(130,90,100,25);
+		registerBtn.setBounds(130,140,100,25);
 		registerBtn.addActionListener(this);
 		panel.add(registerBtn);
 
-		success.setBounds(10, 120, 300, 25);
+		success.setBounds(10, 175, 450, 25);
 		panel.add(success);
 		success.setText(null);
 		
