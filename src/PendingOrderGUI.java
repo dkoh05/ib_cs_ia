@@ -31,8 +31,8 @@ import com.github.lgooddatepicker.components.TimePicker;
 import java.sql.Connection;
 
 public class PendingOrderGUI implements ActionListener {
-	JFrame frame = new JFrame();
-	JPanel panel = new JPanel();
+	public static JFrame frame = new JFrame();
+	public static JPanel panel = new JPanel();
 
 	private static JButton pendingOrderBtn = new JButton("PENDING ORDERS");
 	private static JButton orderHistoryBtn = new JButton("ORDER HISTORY");

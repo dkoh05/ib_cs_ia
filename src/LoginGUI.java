@@ -25,6 +25,7 @@ public class LoginGUI implements ActionListener {
 	JButton loginBtn = new JButton("Login");
 	JLabel success = new JLabel("");
 	JButton registerBtn = new JButton("Register");
+	JButton forgotPwBtn = new JButton("Forgotten Password?");
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
@@ -63,6 +64,11 @@ public class LoginGUI implements ActionListener {
 		registerBtn.setBounds(130,140,100,25);
 		registerBtn.addActionListener(this);
 		panel.add(registerBtn);
+		
+		forgotPwBtn.setBounds(250, 140, 175, 25);
+		forgotPwBtn.addActionListener(this);
+		panel.add(forgotPwBtn);
+		
 
 		success.setBounds(10, 175, 450, 25);
 		panel.add(success);
@@ -133,7 +139,10 @@ public class LoginGUI implements ActionListener {
 			frame.dispose(); // close the login page
 			RegisterGUI signupPage = new RegisterGUI(); // create a register page
 			
-		} 
+		} else if (e.getSource() == forgotPwBtn) {
+			frame.dispose();
+			ForgotPasswordGUI forgotPwPage = new ForgotPasswordGUI();
+		}
 		
 	}
 
