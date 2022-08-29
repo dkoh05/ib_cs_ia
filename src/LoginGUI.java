@@ -141,7 +141,7 @@ public class LoginGUI implements ActionListener {
 			
 		} else if (e.getSource() == forgotPwBtn) {
 			frame.dispose();
-			ForgotPasswordGUI forgotPwPage = new ForgotPasswordGUI();
+			GetPwTokenGUI forgotPwPage = new GetPwTokenGUI();
 		}
 		
 	}

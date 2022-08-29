@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -8,28 +10,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class ForgotPasswordGUI {
+public class GetPwTokenGUI implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	
 	JLabel forgotPwLabel = new JLabel("Forgotten your password? Enter your username and new password!");
 	JLabel usernameLabel = new JLabel("Username: ");
 	JTextField usernameText = new JTextField();
-	JLabel newPwLabel = new JLabel("New Password: ");
-	JTextField newPwText = new JTextField();
-	JLabel confirmPwLabel = new JLabel("Confirm Password: ");
-	JTextField confirmPwText = new JTextField();
-	
-	JButton resetPwBtn = new JButton("RESET PASSWORD");
+
+	JButton getTokenBtn = new JButton("RESET PASSWORD");
 	JButton loginBtn = new JButton("LOG-IN");
-	JButton logoutBtn = new JButton("LOG-OUT");
-	
-	
-	
-	
-	
-	ForgotPasswordGUI(){
-		frame.setSize(550, 350);
+	GetPwTokenGUI(){
+		frame.setSize(450, 200);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -45,38 +37,33 @@ public class ForgotPasswordGUI {
 		Border line = BorderFactory.createLineBorder(Color.black, 1);
 		usernameText.setBorder(line);
 		panel.add(usernameText);
-		
-		newPwLabel.setBounds(10, 125, 150, 25);
-		panel.add(newPwLabel);
 
-		newPwText.setBounds(150, 125, 165, 25);
-		Border line1 = BorderFactory.createLineBorder(Color.black, 1);
-		newPwText.setBorder(line1);
-		panel.add(newPwText);
 		
-		confirmPwLabel.setBounds(10, 175, 165, 25);
-		panel.add(confirmPwLabel);
-
-		confirmPwText.setBounds(150, 175, 165, 25);
-		confirmPwText.setBorder(line);
-		panel.add(confirmPwText);
+		getTokenBtn.setBounds(10, 125, 150, 25);
+		getTokenBtn.addActionListener(this);
+		panel.add(getTokenBtn);
 		
-		resetPwBtn.setBounds(10, 225, 150, 25);
-		panel.add(resetPwBtn);
-		
-		loginBtn.setBounds(200, 225, 100, 25);
+		loginBtn.setBounds(200, 125, 100, 25);
+		loginBtn.addActionListener(this);
 		panel.add(loginBtn);
-		
-		logoutBtn.setBounds(425, 20, 100, 25);
-		panel.add(logoutBtn);
-		
-		
-		
-		
-		
 		
 		frame.setVisible(true);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == loginBtn) {
+			frame.dispose();
+			LoginGUI loginPage = new LoginGUI();
+		} else if(e.getSource() == getTokenBtn) {
+			frame.dispose();
+			ResetPasswordGUI resetPwPage = new ResetPasswordGUI();
+			
+			
+			
+		}
+		
 	}
 
 }
