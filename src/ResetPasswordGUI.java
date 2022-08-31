@@ -17,10 +17,10 @@ public class ResetPasswordGUI implements ActionListener{
 	JLabel title = new JLabel("Reset Password");
 	JLabel subTitle = new JLabel("Check your email, a token has been sent to your e-mail address.");
 	
-	JLabel usernameLabel = new JLabel("Username: ");
+	JLabel tokenLabel = new JLabel("Token: ");
 	JLabel newPwLabel = new JLabel("New Password: ");
 	JLabel confirmPwLabel = new JLabel("Confirm Password: ");
-	JTextField usernameText = new JTextField();
+	JTextField tokenText = new JTextField();
 	JTextField newPwText = new JTextField();
 	JTextField confirmPwText = new JTextField();
 	JButton resetPwBtn = new JButton("RESET PASSWORD");
@@ -40,10 +40,10 @@ public class ResetPasswordGUI implements ActionListener{
 		panel.add(title);
 		panel.add(subTitle);
 		
-		usernameLabel.setBounds(10, 100, 165, 25);
-		usernameText.setBounds(150, 100, 165, 25);
-		panel.add(usernameText);
-		panel.add(usernameLabel);
+		tokenLabel.setBounds(10, 100, 165, 25);
+		tokenText.setBounds(150, 100, 165, 25);
+		panel.add(tokenText);
+		panel.add(tokenLabel);
 		
 		newPwLabel.setBounds(10, 150, 165, 25);
 		newPwText.setBounds(150, 150, 165, 25);

@@ -7,8 +7,8 @@ public class Main {
 //		ThankYouGUI thankyouPage = new ThankYouGUI(null);
 //		PendingOrderGUI pendingPage = new PendingOrderGUI();
 //		Table tablePage = new Table();
-		ResetPasswordGUI rpwP = new ResetPasswordGUI();
-		
+//		ResetPasswordGUI rpwP = new ResetPasswordGUI();
+		GetPwTokenGUI getToken = new GetPwTokenGUI();
 	}
 
 }

@@ -1,6 +1,10 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,8 +24,11 @@ public class GetPwTokenGUI implements ActionListener {
 
 	JButton getTokenBtn = new JButton("RESET PASSWORD");
 	JButton loginBtn = new JButton("LOG-IN");
+	
+	JLabel success = new JLabel("");
+	
 	GetPwTokenGUI(){
-		frame.setSize(450, 200);
+		frame.setSize(450, 250);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -47,16 +54,78 @@ public class GetPwTokenGUI implements ActionListener {
 		loginBtn.addActionListener(this);
 		panel.add(loginBtn);
 		
+		success.setBounds(10, 175, 200, 25);
+		panel.add(success);
+		
+		
 		frame.setVisible(true);
 
 	}
-
+	
+	public String getRandomToken() {
+		int leftLimit = 97;
+		int rightLimit = 122;
+		int targetStringLength = 6;
+		Random random = new Random();
+		StringBuilder buffer = new StringBuilder(targetStringLength);
+		for(int i = 0; i< targetStringLength;i++) {
+			int randomInt = leftLimit + (int)(random.nextFloat() * (rightLimit - leftLimit + 1));
+			buffer.append((char) randomInt);
+		}
+		String generatedString = buffer.toString();
+		
+		return generatedString;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		} else if(e.getSource() == getTokenBtn) {
+			String username = usernameText.getText();
+			if(username.length() < 3) {
+				success.setText("Username is not long enough!");
+				return;
+			}
+			
+			// checks if the username is in the database
+			String selectQuery = "SELECT username, email_address FROM user where username=?";
+			String insertQuery = "INSERT INTO reset_pw_token (username, token) values (?, ?)";
+			Connection con = SQLConnect.connect();
+			
+			try {
+				PreparedStatement selectStmt = con.prepareStatement(selectQuery);
+				selectStmt.setString(1, username);
+				ResultSet rs = selectStmt.executeQuery();
+				
+				String email = "";
+				if(rs.next()) {
+					email = rs.getString("email_address");
+					
+				} else {
+					success.setText("Username doesn't exist!");
+					return;
+				}
+				
+				
+				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+				insertStmt.setString(1, username);
+				insertStmt.setString(2, getRandomToken());
+				
+				int rowCount = insertStmt.executeUpdate();
+				if(rowCount == 0) {
+					success.setText("Execute update error");
+					return;
+				}
+			} catch(Exception e2) {
+				e2.printStackTrace();
+				
+			}
+			
+			// send the email
+			
+			
+			
 			frame.dispose();
 			ResetPasswordGUI resetPwPage = new ResetPasswordGUI();
 			
@@ -65,5 +134,6 @@ public class GetPwTokenGUI implements ActionListener {
 		}
 		
 	}
+	
 
 }
