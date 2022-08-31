@@ -29,7 +29,7 @@ public class ResetPasswordGUI implements ActionListener{
 	
 	
 	ResetPasswordGUI(){
-		frame.setSize(450, 400);
+		frame.setSize(450, 350);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -55,7 +55,7 @@ public class ResetPasswordGUI implements ActionListener{
 		panel.add(confirmPwLabel);
 		panel.add(confirmPwText);
 		
-		resetPwBtn.setBounds(10, 250, 100, 25);
+		resetPwBtn.setBounds(10, 250, 150, 25);
 		resetPwBtn.addActionListener(this);
 		panel.add(resetPwBtn);
 		
