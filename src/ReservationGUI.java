@@ -27,6 +27,9 @@ import java.util.*;
 public class ReservationGUI implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
+	
+	JLabel title = new JLabel("Reservation Page");
+	
 	JButton logoutBtn = new JButton("Logout");
 	JLabel bookingLabel = new JLabel("Booking Reservation");
 	JLabel guestNumLabel = new JLabel("Number of Guests: ");
@@ -55,13 +58,16 @@ public class ReservationGUI implements ActionListener {
 	
 	
 	ReservationGUI(String us){
-		frame.setSize(1200, 900);
+		frame.setSize(500, 450);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
 		
-		logoutBtn.setBounds(1080, 25, 100, 25);
+		title.setBounds(150, 15, 150, 25);
+		panel.add(title);
+		
+		logoutBtn.setBounds(350, 15, 100, 25);
 		logoutBtn.addActionListener((ActionListener) this);
 		panel.add(logoutBtn);
 		//

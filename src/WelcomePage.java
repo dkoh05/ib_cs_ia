@@ -24,7 +24,7 @@ public class WelcomePage implements ActionListener {
 	
 
 	WelcomePage(String us) {
-		frame.setSize(1200, 900);
+		frame.setSize(1200, 600);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
