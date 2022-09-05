@@ -76,6 +76,11 @@ public class GetPwTokenGUI implements ActionListener {
 		
 		return generatedString;
 	}
+	
+	public void sendEmail(String email) {
+		
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginBtn) {
