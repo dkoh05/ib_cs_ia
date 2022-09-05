@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
@@ -84,33 +85,41 @@ public class GetPwTokenGUI implements ActionListener {
 		return generatedString;
 	}
 	
-	public void sendEmail(String emailTo, String token) {
+	public void sendEmail(String emailTo, String token, String username) {
 		String emailFrom = "noreplyhomebooking@gmail.com";
-		String host = "localhost";
-		Properties prop = System.getProperties();
-		prop.setProperty("mail.smtp.host", host);
-		Session session = Session.getDefaultInstance(prop);
+		String host = "relay.hangosmtp.net";
+		Properties props = new Properties();
+		
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", "25");
+		
+		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, token);
+			}
+		});
 		
 		try {
-			MimeMessage message = new MimeMessage(session);
+			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(emailFrom));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
-			message.setSubject("Reset Password Token");
-			message.setText("Your token to reset your password is: " + token);
+			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo));
+			message.setSubject("Reset Password: Token");
+			message.setText("Hello, your token needed to reset your password is: " + token);
 			
 			Transport.send(message);
 			System.out.println("Sent message successfully!");
-		} catch (Exception mex) {
-			mex.printStackTrace();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		
-		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String email = "";
 		String token = getRandomToken();
+		
 		if(e.getSource() == loginBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
@@ -157,7 +166,7 @@ public class GetPwTokenGUI implements ActionListener {
 			}
 			
 			// send the email
-			sendEmail(email, token);
+			sendEmail(email, token, username);
 			
 			
 			
