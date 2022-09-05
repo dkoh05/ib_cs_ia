@@ -8,8 +8,8 @@ public class Main {
 //		PendingOrderGUI pendingPage = new PendingOrderGUI();
 //		Table tablePage = new Table();
 //		ResetPasswordGUI rpwP = new ResetPasswordGUI();
-//		GetPwTokenGUI getToken = new GetPwTokenGUI();
-		WelcomePage welcomePage = new WelcomePage(null);
+		GetPwTokenGUI getToken = new GetPwTokenGUI();
+//		WelcomePage welcomePage = new WelcomePage(null);
 		
 		
 	}

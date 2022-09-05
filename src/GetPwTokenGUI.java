@@ -4,8 +4,14 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +30,7 @@ public class GetPwTokenGUI implements ActionListener {
 
 	JButton getTokenBtn = new JButton("RESET PASSWORD");
 	JButton loginBtn = new JButton("LOG-IN");
+	String tokenAdd = "";
 	
 	JLabel success = new JLabel("");
 	
@@ -77,12 +84,33 @@ public class GetPwTokenGUI implements ActionListener {
 		return generatedString;
 	}
 	
-	public void sendEmail(String email) {
+	public void sendEmail(String emailTo, String token) {
+		String emailFrom = "noreplyhomebooking@gmail.com";
+		String host = "localhost";
+		Properties prop = System.getProperties();
+		prop.setProperty("mail.smtp.host", host);
+		Session session = Session.getDefaultInstance(prop);
+		
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(emailFrom));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+			message.setSubject("Reset Password Token");
+			message.setText("Your token to reset your password is: " + token);
+			
+			Transport.send(message);
+			System.out.println("Sent message successfully!");
+		} catch (Exception mex) {
+			mex.printStackTrace();
+		}
+		
 		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String email = "";
+		String token = getRandomToken();
 		if(e.getSource() == loginBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
@@ -103,7 +131,7 @@ public class GetPwTokenGUI implements ActionListener {
 				selectStmt.setString(1, username);
 				ResultSet rs = selectStmt.executeQuery();
 				
-				String email = "";
+
 				if(rs.next()) {
 					email = rs.getString("email_address");
 					
@@ -112,10 +140,11 @@ public class GetPwTokenGUI implements ActionListener {
 					return;
 				}
 				
+
 				
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
 				insertStmt.setString(1, username);
-				insertStmt.setString(2, getRandomToken());
+				insertStmt.setString(2, token);
 				
 				int rowCount = insertStmt.executeUpdate();
 				if(rowCount == 0) {
@@ -128,6 +157,7 @@ public class GetPwTokenGUI implements ActionListener {
 			}
 			
 			// send the email
+			sendEmail(email, token);
 			
 			
 			
