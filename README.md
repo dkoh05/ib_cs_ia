@@ -15,8 +15,11 @@
 - click 'Apply and Close' 
 
 ### 5. Set up environment variable(s)
-- Go to 'Run Config.' --> 'Environment' tab --> click on 'Add' button
-- Type your variable name and the value (which is the path to your database file)
-	Note: Set the name as 'DB_URL' and the value depending on your path to database file. 
-	The format of 'value': `jdbc:sqlite:<path>`
+Go to 'Run Config.' --> 'Environment' tab --> click on 'Add' button.
+Type your variable name and the value. 
+	
+Environment variable list: 
+	
+* DB_URL: Format `jdbc:sqlite:<path>`; the URI/pathway to connect to your local database
+* EMAIL_PASSWORD: the password of the sender's email
 	
