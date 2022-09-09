@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 
 public class OrderHistoryGUI implements ActionListener{
@@ -16,6 +18,15 @@ public class OrderHistoryGUI implements ActionListener{
 	private static JButton finInfoBtn = new JButton("FINANCIAL INFO.");
 	private static JButton usersListBtn = new JButton("USERS LIST");
 	private static JButton logoutBtn = new JButton("LOGOUT");
+	
+	String[][] allOrders = new String[1000][8];
+	String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
+			"Check-out Time", "Note" };
+	JTable table = new JTable(allOrders, columnNames);
+
+	JScrollPane sp = new JScrollPane(table);
+
+	
 	
 	
 	OrderHistoryGUI(){

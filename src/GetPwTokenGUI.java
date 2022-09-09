@@ -169,9 +169,13 @@ public class GetPwTokenGUI implements ActionListener {
 
 			// send the email
 			sendEmail(email, token, username);
-
+			try {
+				con.close();
+			} catch (Exception e3){
+				e3.printStackTrace();
+			}
 			frame.dispose();
-			ResetPasswordGUI resetPwPage = new ResetPasswordGUI();
+			ResetPasswordGUI resetPwPage = new ResetPasswordGUI(username);
 
 		}
 

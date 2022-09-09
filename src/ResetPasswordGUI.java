@@ -1,6 +1,10 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -23,12 +27,15 @@ public class ResetPasswordGUI implements ActionListener{
 	JTextField tokenText = new JTextField();
 	JTextField newPwText = new JTextField();
 	JTextField confirmPwText = new JTextField();
+	JLabel success = new JLabel();
+	
 	JButton resetPwBtn = new JButton("RESET PASSWORD");
+	JButton loginBtn = new JButton("<- LOGIN");
 	
 	
+	String username = "";
 	
-	
-	ResetPasswordGUI(){
+	ResetPasswordGUI(String us) {
 		frame.setSize(450, 350);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,7 +64,16 @@ public class ResetPasswordGUI implements ActionListener{
 		
 		resetPwBtn.setBounds(10, 250, 150, 25);
 		resetPwBtn.addActionListener(this);
+		loginBtn.setBounds(200, 250, 125, 25);
+		loginBtn.addActionListener(this);
 		panel.add(resetPwBtn);
+		panel.add(loginBtn);
+		
+		success.setBounds(10, 285, 200, 25);
+		panel.add(success);
+		success.setText(null);
+		
+		username = us;
 		
 		frame.setVisible(true);
 		
@@ -68,7 +84,57 @@ public class ResetPasswordGUI implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getSource() == loginBtn) {
+			frame.dispose();
+			LoginGUI login = new LoginGUI();
+			
+		} else if(e.getSource() == resetPwBtn) {
+			String token = tokenText.getText();
+			String newPw = newPwText.getText();
+			String confirmPw = confirmPwText.getText();
+			
+			if(newPw.length() < 8 || !confirmPw.equals(newPw)) {
+				success.setText("Incorrect password input. Try again.");
+				return;
+			} 
+			
+			String query = "SELECT username, token from reset_pw_token where username=?";
+			
+			Connection con = SQLConnect.connect();
+			
+			try {
+				PreparedStatement stmt = con.prepareStatement(query);
+				stmt.setString(1, username);
+				ResultSet rs = stmt.executeQuery();
+				
+				
+				String tokenDb = ""; // token from the database
+				
+				while(rs.next()) {
+					tokenDb = rs.getString("token");
+					if(tokenDb.equals(token)) { // comparing the token from the database to the inputted token
+						String updateQuery = "UPDATE user SET password=? WHERE username=?";
+						PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+						updateStmt.setString(1, newPw);
+						updateStmt.setString(2, username);
+						
+						int updateCount = updateStmt.executeUpdate();
+						if(updateCount == 0) { // internal error
+							success.setText("Nothing has been updated; error.");
+							return;
+						}
+					}
+				}
+				
+				
+
+			} catch (Exception e2){
+				e2.printStackTrace();
+			}
+			
+			
+			
+		}
 		
 	}
 

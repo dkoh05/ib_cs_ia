@@ -182,7 +182,7 @@ public class RegisterGUI implements ActionListener{
 				
 				// insert account details into sql database
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
-				insertStmt.setString(1,username);
+				insertStmt.setString(1, username);
 				insertStmt.setString(2, password);
 				insertStmt.setString(3, fullName);
 				insertStmt.setString(4, email);

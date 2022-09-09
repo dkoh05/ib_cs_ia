@@ -104,7 +104,6 @@ public class PendingOrderGUI implements ActionListener {
 		panel.add(guestNameText);
 
 		guestNumLabel.setBounds(100, 600, 150, 25);
-
 		panel.add(guestNumLabel);
 
 		guestNumSpinner.setBounds(250, 600, 50, 25);
