@@ -26,7 +26,7 @@ public class GetPwTokenGUI implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 
-	JLabel forgotPwLabel = new JLabel("Forgotten your password? Enter your username and new password!");
+	JLabel title = new JLabel("Forgotten your password? Enter your username and new password!");
 	JLabel usernameLabel = new JLabel("Username: ");
 	JTextField usernameText = new JTextField();
 
@@ -43,8 +43,8 @@ public class GetPwTokenGUI implements ActionListener {
 		frame.add(panel);
 		panel.setLayout(null);
 
-		forgotPwLabel.setBounds(10, 20, 400, 25);
-		panel.add(forgotPwLabel);
+		title.setBounds(10, 20, 400, 25);
+		panel.add(title);
 
 		usernameLabel.setBounds(10, 75, 80, 25);
 		panel.add(usernameLabel);

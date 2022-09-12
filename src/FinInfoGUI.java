@@ -11,11 +11,11 @@ public class FinInfoGUI implements ActionListener{
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	
-	private static JButton pendingOrderBtn = new JButton("PENDING ORDERS");
-	private static JButton orderHistoryBtn = new JButton("ORDER HISTORY");
-	private static JButton finInfoBtn = new JButton("FINANCIAL INFO.");
-	private static JButton usersListBtn = new JButton("USERS LIST");
-	private static JButton logoutBtn = new JButton("LOGOUT");
+	private JButton pendingOrderBtn = new JButton("PENDING ORDERS");
+	private JButton orderHistoryBtn = new JButton("ORDER HISTORY");
+	private JButton finInfoBtn = new JButton("FINANCIAL INFO.");
+	private JButton usersListBtn = new JButton("USERS LIST");
+	private JButton logoutBtn = new JButton("LOGOUT");
 	
 	
 	FinInfoGUI(){
@@ -54,15 +54,19 @@ public class FinInfoGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
+			System.out.println("fin1");
 			frame.dispose();
 			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 		} else if(e.getSource() == orderHistoryBtn) {
+			System.out.println("fin2");
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
 		} else if(e.getSource() == usersListBtn) {
+			System.out.println("fin3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if(e.getSource() == logoutBtn) {
+			System.out.println("fin 4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}

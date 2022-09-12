@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 public class WelcomePage implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
-	JLabel welcomeLabel = new JLabel("You are successfully logged in, welcome! Let's make a reservation.");
+	JLabel title = new JLabel("You are successfully logged in, welcome! Let's make a reservation.");
 
 	public JButton logoutBtn = new JButton("Logout");
 	JButton makeBkgBtn = new JButton("Click here to Make a Reservation");
@@ -24,7 +24,7 @@ public class WelcomePage implements ActionListener {
 	
 
 	WelcomePage(String us) {
-		frame.setSize(1200, 600);
+		frame.setSize(700, 600);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -32,14 +32,14 @@ public class WelcomePage implements ActionListener {
 		
 		username = us;
 
-		welcomeLabel.setBounds(400, 475, 500, 20);
-		panel.add(welcomeLabel);
+		title.setBounds(200, 475, 500, 20);
+		panel.add(title);
 
-		logoutBtn.setBounds(1080, 25, 100, 25);
+		logoutBtn.setBounds(540, 25, 100, 25);
 		logoutBtn.addActionListener((ActionListener) this);
 		panel.add(logoutBtn);
 
-		makeBkgBtn.setBounds(475, 500, 250, 25);
+		makeBkgBtn.setBounds(235, 500, 250, 25);
 		makeBkgBtn.addActionListener((ActionListener) this);
 		panel.add(makeBkgBtn);
 
@@ -47,7 +47,7 @@ public class WelcomePage implements ActionListener {
 			// tick icon 
 			BufferedImage tickImg = ImageIO.read(new File("src//tick_icon.png"));
 			JLabel tickLabel = new JLabel(new ImageIcon(tickImg));
-			tickLabel.setBounds(488, 200, 225, 225);
+			tickLabel.setBounds(244, 200, 225, 225);
 			panel.add(tickLabel);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -69,7 +69,6 @@ public class WelcomePage implements ActionListener {
 			// close welcome page and open reservation page
 			frame.dispose();
 			ReservationGUI reservationPage = new ReservationGUI(username);
-
 			
 		}
 

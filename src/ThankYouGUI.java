@@ -17,7 +17,7 @@ public class ThankYouGUI implements ActionListener {
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	public JButton logoutBtn = new JButton("Logout");
-	JLabel thankyouLabel = new JLabel("You have successfully made a reservation. We hope you enjoy your stay!");
+	JLabel title = new JLabel("You have successfully made a reservation. We hope you enjoy your stay!");
 	JButton makeBkgBtn = new JButton("Make Another Reservation!");
 	
 	String username = "";
@@ -31,8 +31,8 @@ public class ThankYouGUI implements ActionListener {
 		
 		username = us;
 		
-		thankyouLabel.setBounds(400, 475, 500, 20);
-		panel.add(thankyouLabel);
+		title.setBounds(400, 475, 500, 20);
+		panel.add(title);
 		
 
 		makeBkgBtn.setBounds(475, 500, 250, 25);

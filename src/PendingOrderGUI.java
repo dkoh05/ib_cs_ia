@@ -31,14 +31,14 @@ import com.github.lgooddatepicker.components.TimePicker;
 import java.sql.Connection;
 
 public class PendingOrderGUI implements ActionListener {
-	public static JFrame frame = new JFrame();
-	public static JPanel panel = new JPanel();
+	public JFrame frame = new JFrame();
+	public JPanel panel = new JPanel();
 
-	private static JButton pendingOrderBtn = new JButton("PENDING ORDERS");
-	private static JButton orderHistoryBtn = new JButton("ORDER HISTORY");
-	private static JButton finInfoBtn = new JButton("FINANCIAL INFO.");
-	private static JButton usersListBtn = new JButton("USERS LIST");
-	private static JButton logoutBtn = new JButton("LOGOUT");
+	private JButton pendingOrderBtn = new JButton("PENDING ORDERS");
+	private JButton orderHistoryBtn = new JButton("ORDER HISTORY");
+	private JButton finInfoBtn = new JButton("FINANCIAL INFO.");
+	private JButton usersListBtn = new JButton("USERS LIST");
+	private JButton logoutBtn = new JButton("LOGOUT");
 
 	JLabel bookingLabel = new JLabel("Booking Reservation");
 	JLabel guestNameLabel = new JLabel("Name: ");
@@ -70,6 +70,8 @@ public class PendingOrderGUI implements ActionListener {
 	JTable table = new JTable(pendingOrders, columnNames);
 
 	JScrollPane sp = new JScrollPane(table);
+	
+
 
 	PendingOrderGUI() {
 		frame.setSize(1200, 800);
@@ -201,15 +203,19 @@ public class PendingOrderGUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == orderHistoryBtn) {
+			System.out.println("debug1");
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
 		} else if (e.getSource() == finInfoBtn) {
+			System.out.println("debug2");
 			frame.dispose();
 			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if (e.getSource() == usersListBtn) {
+			System.out.println("debug3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if (e.getSource() == logoutBtn) {
+			System.out.println("debug4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}

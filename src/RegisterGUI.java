@@ -18,7 +18,7 @@ import javax.swing.border.Border;
 public class RegisterGUI implements ActionListener{
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
-	JLabel signupLabel = new JLabel("Sign-up");
+	JLabel title = new JLabel("Sign-up");
 	JLabel usernameLabel = new JLabel("Username: ");
 	JTextField usernameText = new JTextField();
 	JLabel passwordLabel = new JLabel("Password: ");
@@ -36,14 +36,14 @@ public class RegisterGUI implements ActionListener{
 	JLabel success = new JLabel("");
 	
 	RegisterGUI(){
-		frame.setSize(450, 400);
+		frame.setSize(400, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
 		
-		signupLabel.setBounds(10, 20, 80, 25);
-		panel.add(signupLabel);
+		title.setBounds(10, 20, 80, 25);
+		panel.add(title);
 		
 		usernameLabel.setBounds(10, 50, 80, 25);
 		panel.add(usernameLabel);

@@ -13,11 +13,11 @@ public class OrderHistoryGUI implements ActionListener{
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
 	
-	private static JButton pendingOrderBtn = new JButton("PENDING ORDERS");
-	private static JButton orderHistoryBtn = new JButton("ORDER HISTORY");
-	private static JButton finInfoBtn = new JButton("FINANCIAL INFO.");
-	private static JButton usersListBtn = new JButton("USERS LIST");
-	private static JButton logoutBtn = new JButton("LOGOUT");
+	private JButton pendingOrderBtn = new JButton("PENDING ORDERS");
+	private JButton orderHistoryBtn = new JButton("ORDER HISTORY");
+	private JButton finInfoBtn = new JButton("FINANCIAL INFO.");
+	private JButton usersListBtn = new JButton("USERS LIST");
+	private JButton logoutBtn = new JButton("LOGOUT");
 	
 	String[][] allOrders = new String[1000][8];
 	String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
@@ -65,15 +65,19 @@ public class OrderHistoryGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
+			System.out.println("history1");
 			frame.dispose();
 			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 		} else if(e.getSource() == finInfoBtn) {
+			System.out.println("history2");
 			frame.dispose();
 			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if(e.getSource() == usersListBtn) {
+			System.out.println("history3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if(e.getSource() == logoutBtn) {
+			System.out.println("history4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}
