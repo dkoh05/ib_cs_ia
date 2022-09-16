@@ -54,19 +54,15 @@ public class FinInfoGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
-			System.out.println("fin1");
 			frame.dispose();
 			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 		} else if(e.getSource() == orderHistoryBtn) {
-			System.out.println("fin2");
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
 		} else if(e.getSource() == usersListBtn) {
-			System.out.println("fin3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if(e.getSource() == logoutBtn) {
-			System.out.println("fin 4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}

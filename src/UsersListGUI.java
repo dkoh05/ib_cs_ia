@@ -1,10 +1,15 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 public class UsersListGUI implements ActionListener {
 	JFrame frame = new JFrame();
@@ -15,6 +20,12 @@ public class UsersListGUI implements ActionListener {
 	private JButton finInfoBtn = new JButton("FINANCIAL INFO.");
 	private JButton usersListBtn = new JButton("USERS LIST");
 	private JButton logoutBtn = new JButton("LOGOUT");
+	
+	String[][] usersList = new String[1000][5];
+	String[] columnNames = {"Username", "Password", "Full Name", "Email Address", "Phone Number"};
+	JTable table = new JTable(usersList, columnNames);
+
+	JScrollPane sp = new JScrollPane(table);
 
 	UsersListGUI() {
 		frame.setSize(1200, 900);
@@ -43,6 +54,33 @@ public class UsersListGUI implements ActionListener {
 		logoutBtn.setBounds(1075, 20, 100, 25);
 		logoutBtn.addActionListener(this);
 		panel.add(logoutBtn);
+		
+		Connection con = SQLConnect.connect();
+
+		String query = "SELECT * from user;";
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			int count = 0;
+
+			while (rs.next()) {
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String fullName = rs.getString("full_name");
+				String email = rs.getString("email_address");
+				String phoneNum = rs.getString("phone_num");
+				
+				String[] row = {username, password, fullName, email, phoneNum};
+				usersList[count] = row;
+				count++;
+			}
+		} catch (Exception e4) {
+			e4.printStackTrace();
+		}
+		
+		sp.setBounds(100, 100, 900, 400);
+		panel.add(sp);
 
 		frame.setVisible(true);
 	}
@@ -50,19 +88,15 @@ public class UsersListGUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == pendingOrderBtn) {
-			System.out.println("user1");
 			frame.dispose();
 			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 		} else if (e.getSource() == orderHistoryBtn) {
-			System.out.println("user2");
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
 		} else if (e.getSource() == finInfoBtn) {
-			System.out.println("user3");
 			frame.dispose();
 			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if (e.getSource() == logoutBtn) {
-			System.out.println("user4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}

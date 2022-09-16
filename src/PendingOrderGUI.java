@@ -194,8 +194,6 @@ public class PendingOrderGUI implements ActionListener {
 		sp.setBounds(100, 100, 900, 400);
 		panel.add(sp);
 		
-		
-
 		frame.add(panel);
 		frame.setVisible(true);
 	}
@@ -203,19 +201,15 @@ public class PendingOrderGUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == orderHistoryBtn) {
-			System.out.println("debug1");
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
 		} else if (e.getSource() == finInfoBtn) {
-			System.out.println("debug2");
 			frame.dispose();
 			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if (e.getSource() == usersListBtn) {
-			System.out.println("debug3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if (e.getSource() == logoutBtn) {
-			System.out.println("debug4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}

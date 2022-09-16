@@ -1,6 +1,9 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -57,6 +60,34 @@ public class OrderHistoryGUI implements ActionListener{
 		logoutBtn.addActionListener(this);
 		panel.add(logoutBtn);
 		
+		Connection con = SQLConnect.connect();
+
+		String query = "SELECT * from reservation where is_completed = 0;";
+
+		try {
+			PreparedStatement stmt = con.prepareStatement(query);
+			ResultSet rs = stmt.executeQuery();
+			int count = 0;
+
+			while (rs.next()) {
+				String id = rs.getString("id");
+				String username = rs.getString("username");
+				String guestNum = rs.getString("guest_num");
+				String checkinDate = rs.getString("checkin_date");
+				String checkinTime = rs.getString("checkin_time");
+				String checkoutDate = rs.getString("checkout_date");
+				String checkoutTime = rs.getString("checkout_time");
+				String note = rs.getString("note");
+				String[] row = { id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note };
+				allOrders[count] = row;
+				count++;
+			}
+		} catch (Exception e4) {
+			e4.printStackTrace();
+		}
+		
+		sp.setBounds(100, 100, 900, 400);
+		panel.add(sp);
 		
 		frame.setVisible(true);
 	}
@@ -65,19 +96,15 @@ public class OrderHistoryGUI implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
-			System.out.println("history1");
 			frame.dispose();
 			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 		} else if(e.getSource() == finInfoBtn) {
-			System.out.println("history2");
 			frame.dispose();
 			FinInfoGUI finInfoPage = new FinInfoGUI();
 		} else if(e.getSource() == usersListBtn) {
-			System.out.println("history3");
 			frame.dispose();
 			UsersListGUI usersListPage = new UsersListGUI();
 		} else if(e.getSource() == logoutBtn) {
-			System.out.println("history4");
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		}
