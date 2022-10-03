@@ -5,12 +5,12 @@ public class Main {
 //		LoginGUI loginPage = new LoginGUI(); 
 //		ReservationGUI reservPage = new ReservationGUI(null);
 //		ThankYouGUI thankyouPage = new ThankYouGUI(null);
-//		PendingOrderGUI pendingPage = new PendingOrderGUI();
+		PendingOrderGUI pendingPage = new PendingOrderGUI();
 //		Table tablePage = new Table();
 //		ResetPasswordGUI rpwP = new ResetPasswordGUI();
 //		GetPwTokenGUI getToken = new GetPwTokenGUI();
 //		WelcomePage welcomePage = new WelcomePage(null);
-		OrderHistoryGUI order = new OrderHistoryGUI();
+//		OrderHistoryGUI order = new OrderHistoryGUI();
 		
 		
 		
