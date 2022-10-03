@@ -33,6 +33,7 @@ import java.sql.Connection;
 public class PendingOrderGUI implements ActionListener {
 	public JFrame frame = new JFrame();
 	public JPanel panel = new JPanel();
+	
 
 	private JButton pendingOrderBtn = new JButton("PENDING ORDERS");
 	private JButton orderHistoryBtn = new JButton("ORDER HISTORY");
@@ -43,7 +44,10 @@ public class PendingOrderGUI implements ActionListener {
 	JLabel bookingLabel = new JLabel("Booking Reservation");
 	JLabel guestNameLabel = new JLabel("Name: ");
 	JTextField guestNameText = new JTextField();
+	
 	JLabel guestNumLabel = new JLabel("Number of Guests: ");
+	JTextField guestNumText = new JTextField();
+	
 	SpinnerModel guestNumModel = new SpinnerNumberModel(1, 1, 10, 1);
 	JSpinner guestNumSpinner = new JSpinner(guestNumModel);
 
@@ -77,7 +81,9 @@ public class PendingOrderGUI implements ActionListener {
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		panel.setBackground(new Color(187, 224, 253 ));
 		panel.setLayout(null);
+		
 //		
 		pendingOrderBtn.setBounds(100, 45, 175, 25);
 		pendingOrderBtn.addActionListener(this);
@@ -184,6 +190,7 @@ public class PendingOrderGUI implements ActionListener {
 				LocalDate localCheckoutDate = LocalDate.parse(checkoutDate);
 				checkoutDatePicker.setDate(localCheckoutDate);
 				checkoutTimePicker.setText(pendingOrders[index][6]);
+				guestNumText.setText(pendingOrders[index][2]);
 				noteText.setText(pendingOrders[index][7]);
 				
 				guestNameText.setEditable(false);

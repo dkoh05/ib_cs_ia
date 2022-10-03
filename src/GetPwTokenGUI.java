@@ -42,6 +42,7 @@ public class GetPwTokenGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
+		panel.setBackground(new Color(187, 224, 253 ));
 
 		title.setBounds(10, 20, 400, 25);
 		panel.add(title);

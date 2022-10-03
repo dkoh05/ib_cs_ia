@@ -41,6 +41,7 @@ public class ResetPasswordGUI implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
+		panel.setBackground(new Color(187, 224, 253 ));
 		
 		title.setBounds(150, 10, 150, 25);
 		subTitle.setBounds(10, 40, 400, 25);

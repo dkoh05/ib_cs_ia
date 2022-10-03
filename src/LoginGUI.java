@@ -37,6 +37,7 @@ public class LoginGUI implements ActionListener {
 		frame.add(panel);
 
 		panel.setLayout(null);
+		panel.setBackground(new Color(187, 224, 253 ));
 		
 		title.setBounds(10, 5, 450, 25);
 		panel.add(title);

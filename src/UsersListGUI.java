@@ -33,6 +33,7 @@ public class UsersListGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
+		panel.setBackground(new Color(187, 224, 253 ));
 
 		pendingOrderBtn.setBounds(100, 45, 175, 25);
 		pendingOrderBtn.addActionListener(this);

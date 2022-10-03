@@ -63,6 +63,7 @@ public class ReservationGUI implements ActionListener {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
 		panel.setLayout(null);
+		panel.setBackground(new Color(187, 224, 253 ));
 		
 		title.setBounds(150, 15, 150, 25);
 		panel.add(title);
