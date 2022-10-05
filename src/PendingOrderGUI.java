@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.lang.Object;
 
 import javax.swing.BorderFactory;
@@ -310,7 +311,25 @@ public class PendingOrderGUI implements ActionListener {
 			}
 			success.setText("You have deleted reservation ID: " + id);
 			// delete row from pendingOrder 2d array
-			
+			String[][] temp = new String[1000][8];
+			Arrays.fill(temp, null);
+			table.repaint();
+			// add functionality where it resets the table; repaint isn't working :(
+		} else if (e.getSource() == completedBtn) {
+			try {
+				String completedQuery = "UPDATE reservation WHERE is_completed = ?";
+				PreparedStatement completedStmt = con.prepareStatement(completedQuery);
+				completedStmt.setInt(1, 1);
+				
+				int completedCount = completedStmt.executeUpdate();
+				if(completedCount == 0) {
+					success.setText("Nothing has been updated");
+					return;
+				}
+			} catch (Exception e2){
+				e2.printStackTrace();
+			}
+			// implement migrating reservation to orderHistory
 		}
 
 	}
