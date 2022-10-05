@@ -26,7 +26,6 @@ import javax.swing.event.ListSelectionListener;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
-
 import java.sql.Connection;
 
 public class PendingOrderGUI implements ActionListener {
@@ -227,7 +226,6 @@ public class PendingOrderGUI implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("hello world" + e.getSource());
 		if (e.getSource() == orderHistoryBtn) {
 			frame.dispose();
 			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
@@ -241,14 +239,33 @@ public class PendingOrderGUI implements ActionListener {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		} else if(e.getSource() == saveBtn) {
-			System.out.println("print me");
+			String username = usernameText.getText();
+			Integer guestNum = (Integer) guestNumModel.getValue();
+			String checkin_date = checkinDatePicker.getText();
+			String checkin_time = checkinTimePicker.getText();
+			String checkout_date = checkoutDatePicker.getText();
+			String checkout_time = checkoutTimePicker.getText();
+			String note = noteText.getText();
+			
+
+			
 			
 			String updateQuery = "UPDATE reservation set username = ?,"
 					+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
 					+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
 			
 			try {
-				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+				PreparedStatement updateStmt = con.prepareStatement(updateQuery); // create a statement variable to store the query
+
+				// check if there are duplicate accounts
+				int count = 0;
+				int updateCount = updateStmt.executeUpdate();
+				if(updateCount == 0) {
+					success.setText("Nothing has been updated!");
+					return;
+				} 
+				success.setText("You have successfully updated!");
+				// insert updates onto database
 				updateStmt.setString(1, usernameText.getText());
 				updateStmt.setInt(2,(Integer) guestNumModel.getValue());
 				updateStmt.setString(3, checkinDatePicker.getText());
@@ -257,14 +274,11 @@ public class PendingOrderGUI implements ActionListener {
 				updateStmt.setString(6, checkoutTimePicker.getText());
 				updateStmt.setString(7, noteText.getText());
 				
-				int updateCount = updateStmt.executeUpdate();
-				if(updateCount == 0) {
-					success.setText("Nothing has been updated!");
-					System.out.println("debug1");
+				int rowCount = updateStmt.executeUpdate(); // execute the insert statement; return either the number of rows inserted successfuly or return zero if nothing inserted
+				if(rowCount == 0) { // internal error
+					success.setText("execute update error"); 
 					return;
-				} 
-				System.out.println("debug2");
-				success.setText("You have successfully updated!");
+				}
 				
 			} catch (Exception e2){
 				e2.printStackTrace();
