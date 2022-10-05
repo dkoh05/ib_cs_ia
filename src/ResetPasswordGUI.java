@@ -123,7 +123,7 @@ public class ResetPasswordGUI implements ActionListener{
 						if(updateCount == 0) { // internal error
 							success.setText("Nothing has been updated; error.");
 							return;
-						}
+						}	
 					}
 				}
 			} catch (Exception e2){

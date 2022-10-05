@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.lang.Object;
 
 import javax.swing.BorderFactory;
@@ -31,7 +32,6 @@ import java.sql.Connection;
 public class PendingOrderGUI implements ActionListener {
 	public JFrame frame = new JFrame();
 	public JPanel panel = new JPanel();
-	
 
 	private JButton pendingOrderBtn = new JButton("PENDING ORDERS");
 	private JButton orderHistoryBtn = new JButton("ORDER HISTORY");
@@ -42,9 +42,9 @@ public class PendingOrderGUI implements ActionListener {
 	JLabel bookingLabel = new JLabel("Booking Reservation");
 	JLabel usernameLabel = new JLabel("Name: ");
 	JTextField usernameText = new JTextField();
-	
+
 	JLabel guestNumLabel = new JLabel("Number of Guests: ");
-	
+
 	SpinnerModel guestNumModel = new SpinnerNumberModel(1, 1, 10, 1);
 	JSpinner guestNumSpinner = new JSpinner(guestNumModel);
 
@@ -71,19 +71,20 @@ public class PendingOrderGUI implements ActionListener {
 	JTable table = new JTable(pendingOrders, columnNames);
 
 	JScrollPane sp = new JScrollPane(table);
-	
+
 	JLabel success = new JLabel();
-	
+
 	Connection con = SQLConnect.connect();
 
+	int index;
 
 	PendingOrderGUI() {
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		panel.setBackground(new Color(187, 224, 253 ));
+		panel.setBackground(new Color(187, 224, 253));
 		panel.setLayout(null);
-		
+
 //		
 		pendingOrderBtn.setBounds(100, 45, 175, 25);
 		pendingOrderBtn.addActionListener(this);
@@ -153,8 +154,8 @@ public class PendingOrderGUI implements ActionListener {
 		panel.add(saveBtn);
 		panel.add(cancelBtn);
 		panel.add(completedBtn);
-		
-		success.setBounds(100, 725, 150, 25);
+
+		success.setBounds(100, 725, 400, 25);
 		panel.add(success);
 
 		// change the data and column names to correspond with database
@@ -184,20 +185,20 @@ public class PendingOrderGUI implements ActionListener {
 		}
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				int index = table.getSelectedRow();
-				if(pendingOrders[index][0] != null) {
+				index = table.getSelectedRow();
+				if (pendingOrders[index][0] != null) {
 					usernameText.setText(pendingOrders[index][1]);
-					
+
 					String checkinDate = pendingOrders[index][3];
 					LocalDate localCheckinDate = LocalDate.parse(checkinDate);
 					checkinDatePicker.setDate(localCheckinDate);
 					checkinTimePicker.setText(pendingOrders[index][4]);
-					
+
 					String checkoutDate = pendingOrders[index][5];
 					LocalDate localCheckoutDate = LocalDate.parse(checkoutDate);
 					checkoutDatePicker.setDate(localCheckoutDate);
 					checkoutTimePicker.setText(pendingOrders[index][6]);
-					
+
 					guestNumModel.setValue(Integer.parseInt(pendingOrders[index][2]));
 					noteText.setText(pendingOrders[index][7]);
 					usernameText.setEditable(false);
@@ -205,21 +206,21 @@ public class PendingOrderGUI implements ActionListener {
 					usernameText.setText(null);
 					checkinDatePicker.setDate(null);
 					checkinTimePicker.setText(null);
-					
+
 					checkoutDatePicker.setDate(null);
 					checkoutTimePicker.setText(null);
-					
+
 					guestNumModel.setValue(1);
 					noteText.setText(null);
 					usernameText.setEditable(false);
-					
+
 				}
 			}
 		});
 
 		sp.setBounds(100, 100, 900, 400);
 		panel.add(sp);
-		
+
 		frame.add(panel);
 		frame.setVisible(true);
 	}
@@ -238,54 +239,79 @@ public class PendingOrderGUI implements ActionListener {
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
-		} else if(e.getSource() == saveBtn) {
-			String username = usernameText.getText();
-			Integer guestNum = (Integer) guestNumModel.getValue();
-			String checkin_date = checkinDatePicker.getText();
-			String checkin_time = checkinTimePicker.getText();
-			String checkout_date = checkoutDatePicker.getText();
-			String checkout_time = checkoutTimePicker.getText();
+		} else if (e.getSource() == saveBtn && pendingOrders[index][0]!=null) {
+			
+
+			int id = Integer.parseInt(pendingOrders[index][0]);
+			int guestNum = (Integer) guestNumSpinner.getValue();
+			LocalDate checkinDate = checkinDatePicker.getDate();
+			String checkinDateString = checkinDate.toString();
+			LocalTime checkinTime = checkinTimePicker.getTime();
+			String checkinTimeString = checkinTime.toString();
+			LocalDate checkoutDate = checkoutDatePicker.getDate();
+			String checkoutDateString = checkoutDate.toString();
+			LocalTime checkoutTime = checkoutTimePicker.getTime();
+			String checkoutTimeString = checkoutTime.toString();
 			String note = noteText.getText();
-			
-
-			
-			
-			String updateQuery = "UPDATE reservation set username = ?,"
-					+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
-					+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
-			
 			try {
-				PreparedStatement updateStmt = con.prepareStatement(updateQuery); // create a statement variable to store the query
+				String updateQuery = "UPDATE reservation set username = ?,"
+						+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
+						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
 
-				// check if there are duplicate accounts
-				int count = 0;
+				
+				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+				
+
+				
+				updateStmt.setString(1, usernameText.getText());
+				updateStmt.setInt(2, guestNum);
+				updateStmt.setString(3, checkinDateString);
+				updateStmt.setString(4, checkinTimeString);
+				updateStmt.setString(5, checkoutDateString);
+				updateStmt.setString(6, checkoutTimeString);
+				updateStmt.setString(7, note);
+				updateStmt.setInt(8, id);
+				
 				int updateCount = updateStmt.executeUpdate();
-				if(updateCount == 0) {
+				if (updateCount == 0) {
 					success.setText("Nothing has been updated!");
 					return;
-				} 
-				success.setText("You have successfully updated!");
-				// insert updates onto database
-				updateStmt.setString(1, usernameText.getText());
-				updateStmt.setInt(2,(Integer) guestNumModel.getValue());
-				updateStmt.setString(3, checkinDatePicker.getText());
-				updateStmt.setString(4, checkinTimePicker.getText());
-				updateStmt.setString(5, checkoutDatePicker.getText());
-				updateStmt.setString(6, checkoutTimePicker.getText());
-				updateStmt.setString(7, noteText.getText());
-				
-				int rowCount = updateStmt.executeUpdate(); // execute the insert statement; return either the number of rows inserted successfuly or return zero if nothing inserted
-				if(rowCount == 0) { // internal error
-					success.setText("execute update error"); 
-					return;
 				}
-				
-			} catch (Exception e2){
+
+			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
+			
+			success.setText("Your reservation data has been changed.");
+			// update pendingOrder so that updated data displays on table for admin
 
+			pendingOrders[index][2] = Integer.toString(guestNum);
+			pendingOrders[index][3] = checkinDateString;
+			pendingOrders[index][4] = checkinTimeString;
+			pendingOrders[index][5] = checkoutDateString;
+			pendingOrders[index][6] = checkoutTimeString;
+			pendingOrders[index][7] = note;
+			table.repaint(); // update data on the UI
+		} else if(e.getSource() == cancelBtn) {
+			
+			int id = Integer.parseInt(pendingOrders[index][0]);
+			try {
+				String delQuery = "DELETE FROM reservation WHERE id=?";
+				PreparedStatement delStmt = con.prepareStatement(delQuery);
+				delStmt.setInt(1, id);
+				
+				int delCount = delStmt.executeUpdate();
+				if (delCount == 0) {
+					success.setText("Nothing has been updated!");
+					return;
+				}				
+			} catch(Exception e2) {
+				e2.printStackTrace();
+			}
+			success.setText("You have deleted reservation ID: " + id);
+			// delete row from pendingOrder 2d array
+			
 		}
-		
 
 	}
 }
