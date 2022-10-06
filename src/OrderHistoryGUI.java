@@ -63,7 +63,7 @@ public class OrderHistoryGUI implements ActionListener{
 		
 		Connection con = SQLConnect.connect();
 
-		String query = "SELECT * from reservation where is_completed = 0;";
+		String query = "SELECT * from reservation where is_completed = 1;";
 
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);

@@ -317,19 +317,17 @@ public class PendingOrderGUI implements ActionListener {
 			// add functionality where it resets the table; repaint isn't working :(
 		} else if (e.getSource() == completedBtn) {
 			try {
-				String completedQuery = "UPDATE reservation WHERE is_completed = ?";
+				String completedQuery = "UPDATE reservation SET is_completed = 1 WHERE is_completed = 0";
 				PreparedStatement completedStmt = con.prepareStatement(completedQuery);
-				completedStmt.setInt(1, 1);
+				int cmStmtExe = completedStmt.executeUpdate();
 				
-				int completedCount = completedStmt.executeUpdate();
-				if(completedCount == 0) {
-					success.setText("Nothing has been updated");
-					return;
-				}
 			} catch (Exception e2){
 				e2.printStackTrace();
 			}
-			// implement migrating reservation to orderHistory
+
+			table.repaint();
+			
+			
 		}
 
 	}
