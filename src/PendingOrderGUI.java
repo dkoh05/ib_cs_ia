@@ -294,12 +294,11 @@ public class PendingOrderGUI implements ActionListener {
 			pendingOrders[index][7] = note;
 			table.repaint(); // update data on the UI
 		} else if(e.getSource() == cancelBtn) {
-			
-			int id = Integer.parseInt(pendingOrders[index][0]);
+			int canId = Integer.parseInt(pendingOrders[index][0]);
 			try {
 				String delQuery = "DELETE FROM reservation WHERE id=?";
 				PreparedStatement delStmt = con.prepareStatement(delQuery);
-				delStmt.setInt(1, id);
+				delStmt.setInt(1, canId);
 				
 				int delCount = delStmt.executeUpdate();
 				if (delCount == 0) {
@@ -309,22 +308,32 @@ public class PendingOrderGUI implements ActionListener {
 			} catch(Exception e2) {
 				e2.printStackTrace();
 			}
-			success.setText("You have deleted reservation ID: " + id);
+			success.setText("You have deleted reservation ID: " + canId);
 			// delete row from pendingOrder 2d array
-			String[][] temp = new String[1000][8];
-			Arrays.fill(temp, null);
+			String[] temp;
+			temp = pendingOrders[index];
+			pendingOrders[index] = new String[8];
+			pendingOrders[index] = pendingOrders[index+1]; 
+			System.out.println(pendingOrders[index]);
+			System.out.println(pendingOrders[index+1]);
 			table.repaint();
+			
+			
 			// add functionality where it resets the table; repaint isn't working :(
 		} else if (e.getSource() == completedBtn) {
+			int compId= Integer.parseInt(pendingOrders[index][0]);
 			try {
-				String completedQuery = "UPDATE reservation SET is_completed = 1 WHERE is_completed = 0";
+				String completedQuery = "UPDATE reservation SET is_completed = 1 WHERE id=?";
 				PreparedStatement completedStmt = con.prepareStatement(completedQuery);
+				completedStmt.setInt(1, compId);
+				
+				
 				int cmStmtExe = completedStmt.executeUpdate();
 				
 			} catch (Exception e2){
 				e2.printStackTrace();
 			}
-
+			success.setText("Order ID " + compId + " has been classified as a completed order.");
 			table.repaint();
 			
 			

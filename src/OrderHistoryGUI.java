@@ -33,7 +33,7 @@ public class OrderHistoryGUI implements ActionListener{
 	
 	
 	OrderHistoryGUI(){
-		frame.setSize(1200, 900);
+		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
