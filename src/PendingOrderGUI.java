@@ -62,7 +62,7 @@ public class PendingOrderGUI implements ActionListener {
 	JLabel noteLabel = new JLabel("Special Requests: ");
 	JTextField noteText = new JTextField();
 
-	JButton saveBtn = new JButton("SAVE");
+	JButton saveBtn = new JButton("SAVE EDITS");
 	JButton cancelBtn = new JButton("CANCEL ORDER"); // cencel order
 	JButton completedBtn = new JButton("COMPLETE ORDER"); // click when an order is completed
 
@@ -310,14 +310,33 @@ public class PendingOrderGUI implements ActionListener {
 			}
 			success.setText("You have deleted reservation ID: " + canId);
 			// delete row from pendingOrder 2d array
-			String[] temp;
-			temp = pendingOrders[index];
-			pendingOrders[index] = new String[8];
-			pendingOrders[index] = pendingOrders[index+1]; 
-			System.out.println(pendingOrders[index]);
-			System.out.println(pendingOrders[index+1]);
-			table.repaint();
+//			String[] temp;
+//			temp = pendingOrders[index];
+//			pendingOrders[index] = new String[8];
+//			pendingOrders[index] = pendingOrders[index+1]; 
+//			System.out.println(pendingOrders[index]);
+//			System.out.println(pendingOrders[index+1]);
+//			table.addNotify();;
 			
+//			String[] temp = null;
+//			String[] deleted_resv = pendingOrders[index];
+//			
+//			for(int i = 0; i < pendingOrders.length-1;i++) {
+//				if(pendingOrders[i] == deleted_resv) {
+//					temp = new String[pendingOrders.length - 1];
+//					for(int j = 0; j < i; j++) {
+//						temp[j] = pendingOrders[index][j];
+//					}
+//					for(int x = i; x<pendingOrders.length - 1; x++) {
+//						temp[x] = pendingOrders[index][x+1];
+//					}
+//					break;
+//				}
+//
+//			}
+//			
+//			System.out.println(temp);
+//			table.repaint();
 			
 			// add functionality where it resets the table; repaint isn't working :(
 		} else if (e.getSource() == completedBtn) {

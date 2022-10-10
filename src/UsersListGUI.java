@@ -28,7 +28,7 @@ public class UsersListGUI implements ActionListener {
 	JScrollPane sp = new JScrollPane(table);
 
 	UsersListGUI() {
-		frame.setSize(1200, 900);
+		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(panel);
@@ -82,7 +82,7 @@ public class UsersListGUI implements ActionListener {
 		
 		sp.setBounds(100, 100, 900, 400);
 		panel.add(sp);
-
+		
 		frame.setVisible(true);
 	}
 
