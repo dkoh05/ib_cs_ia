@@ -310,35 +310,14 @@ public class PendingOrderGUI implements ActionListener {
 			}
 			success.setText("You have deleted reservation ID: " + canId);
 			// delete row from pendingOrder 2d array
-//			String[] temp;
-//			temp = pendingOrders[index];
-//			pendingOrders[index] = new String[8];
-//			pendingOrders[index] = pendingOrders[index+1]; 
-//			System.out.println(pendingOrders[index]);
-//			System.out.println(pendingOrders[index+1]);
-//			table.addNotify();;
-			
-//			String[] temp = null;
-//			String[] deleted_resv = pendingOrders[index];
-//			
-//			for(int i = 0; i < pendingOrders.length-1;i++) {
-//				if(pendingOrders[i] == deleted_resv) {
-//					temp = new String[pendingOrders.length - 1];
-//					for(int j = 0; j < i; j++) {
-//						temp[j] = pendingOrders[index][j];
-//					}
-//					for(int x = i; x<pendingOrders.length - 1; x++) {
-//						temp[x] = pendingOrders[index][x+1];
-//					}
-//					break;
-//				}
-//
-//			}
-//			
-//			System.out.println(temp);
-//			table.repaint();
-			
-			// add functionality where it resets the table; repaint isn't working :(
+			for (int i = index;i<pendingOrders.length-1;i++) {
+				pendingOrders[i] = pendingOrders[i+1];
+				if(pendingOrders[i+1][0] == null) {
+					break;
+				}
+			}
+			table.repaint();
+
 		} else if (e.getSource() == completedBtn) {
 			int compId= Integer.parseInt(pendingOrders[index][0]);
 			try {
@@ -353,6 +332,13 @@ public class PendingOrderGUI implements ActionListener {
 				e2.printStackTrace();
 			}
 			success.setText("Order ID " + compId + " has been classified as a completed order.");
+			
+			for(int i = index;i<pendingOrders.length-1;i++) {
+				pendingOrders[i] = pendingOrders[i+1];
+				if(pendingOrders[i+1][0] == null) {
+					break;
+				}
+			}
 			table.repaint();
 			
 			
