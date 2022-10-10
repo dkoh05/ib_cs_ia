@@ -71,6 +71,9 @@ public class OrderHistoryGUI implements ActionListener{
 	
 
 	JLabel success = new JLabel();
+	
+	JLabel searchTitle = new JLabel("Search for a specific value: ");
+	JTextField searchBar = new JTextField();
 
 	Connection con = SQLConnect.connect();
 	
@@ -143,7 +146,12 @@ public class OrderHistoryGUI implements ActionListener{
 
 		saveBtn.setBounds(100, 700, 150, 25);
 		panel.add(saveBtn);
-
+		
+		searchTitle.setBounds(100, 90, 175, 25);
+		panel.add(searchTitle);
+		
+		searchBar.setBounds(300, 90, 700, 25);
+		panel.add(searchBar);
 
 		String query = "SELECT * from reservation where is_completed = 1;";
 
@@ -203,7 +211,7 @@ public class OrderHistoryGUI implements ActionListener{
 			}
 		});
 		
-		sp.setBounds(100, 100, 900, 400);
+		sp.setBounds(100, 150, 900, 350);
 		panel.add(sp);
 		
 		frame.setVisible(true);

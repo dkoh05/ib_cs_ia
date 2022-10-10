@@ -78,6 +78,9 @@ public class PendingOrderGUI implements ActionListener {
 	Connection con = SQLConnect.connect();
 
 	int index;
+	
+	JLabel searchTitle = new JLabel("Search for a specific value: ");
+	JTextField searchBar = new JTextField();
 
 	PendingOrderGUI() {
 		frame.setSize(1200, 800);
@@ -158,6 +161,13 @@ public class PendingOrderGUI implements ActionListener {
 
 		success.setBounds(100, 725, 400, 25);
 		panel.add(success);
+		
+		searchTitle.setBounds(100, 90, 175, 25);
+		panel.add(searchTitle);
+		
+		searchBar.setBounds(300, 90, 700, 25);
+		panel.add(searchBar);
+		
 
 		// change the data and column names to correspond with database
 
@@ -219,7 +229,7 @@ public class PendingOrderGUI implements ActionListener {
 			}
 		});
 
-		sp.setBounds(100, 100, 900, 400);
+		sp.setBounds(100, 150, 900, 350);
 		panel.add(sp);
 
 		frame.add(panel);

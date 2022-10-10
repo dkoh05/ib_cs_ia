@@ -7,9 +7,11 @@ import java.sql.ResultSet;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class UsersListGUI implements ActionListener {
 	JFrame frame = new JFrame();
@@ -21,11 +23,19 @@ public class UsersListGUI implements ActionListener {
 	private JButton usersListBtn = new JButton("USERS LIST");
 	private JButton logoutBtn = new JButton("LOGOUT");
 	
-	String[][] usersList = new String[1000][5];
-	String[] columnNames = {"Username", "Password", "Full Name", "Email Address", "Phone Number"};
+	String[][] usersList = new String[1000][4];
+	String[] columnNames = {"Username", "Full Name", "Email Address", "Phone Number"};
 	JTable table = new JTable(usersList, columnNames);
 
 	JScrollPane sp = new JScrollPane(table);
+	
+	JLabel searchTitle = new JLabel("Search for a specific value: ");
+	JTextField searchBar = new JTextField();
+	
+	
+	JButton searchBtn = new JButton("SEARCH ACCOUNTS");
+	
+	
 
 	UsersListGUI() {
 		frame.setSize(1200, 800);
@@ -67,12 +77,11 @@ public class UsersListGUI implements ActionListener {
 
 			while (rs.next()) {
 				String username = rs.getString("username");
-				String password = rs.getString("password");
 				String fullName = rs.getString("full_name");
 				String email = rs.getString("email_address");
 				String phoneNum = rs.getString("phone_num");
 				
-				String[] row = {username, password, fullName, email, phoneNum};
+				String[] row = {username, fullName, email, phoneNum};
 				usersList[count] = row;
 				count++;
 			}
@@ -80,8 +89,16 @@ public class UsersListGUI implements ActionListener {
 			e4.printStackTrace();
 		}
 		
-		sp.setBounds(100, 100, 900, 400);
+		sp.setBounds(100, 150, 900, 400);
 		panel.add(sp);
+		
+		searchTitle.setBounds(100, 90, 175, 25);
+		panel.add(searchTitle);
+		
+		searchBar.setBounds(300, 90, 700, 25);
+		panel.add(searchBar);
+		
+//		searchBtn.setBounds(null);
 		
 		frame.setVisible(true);
 	}
@@ -100,6 +117,8 @@ public class UsersListGUI implements ActionListener {
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
-		}
+		} 
+		
+		// search id, username, note
 	}
 }
