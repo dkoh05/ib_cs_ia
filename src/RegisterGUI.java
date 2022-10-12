@@ -112,33 +112,27 @@ public class RegisterGUI implements ActionListener{
 			LoginGUI loginPage = new LoginGUI();
 		}
 		if(e.getSource() == signupBtn) {
-			// get input from textbook 
+			// obtain input values from text box 
 			String username = usernameText.getText().toLowerCase();
 			String password = passwordText.getText();
 			String confirmPassword = confirmPasswordText.getText();
 			String fullName = fullNameText.getText().toUpperCase();
 			String phoneNum = phoneNumText.getText();
 			String email = emailText.getText();
-			
-			// validation on each text field
-			// username/password length check
-			
-			if (username.length() < 3 || password.length() < 8) {
+
+			if (username.length() < 3 || password.length() < 8) { // length checking username ans password
 				success.setText("Username/password not long enough");
 				return;
 			}
-			// confirming password
-			if (!confirmPassword.equals(password)) {
+			if (!confirmPassword.equals(password)) { // comparitive checking on new password
 				success.setText("Your confirmation password doesn't match with your password.");
 				return;
 			}
-			// full name presense check
-			if(fullName.length() <= 0) {
+			if(fullName.length() <= 0) { // presense checking full name
 				success.setText("No name");
 				return;
 			}
-			// confirm phone number
-			if (phoneNum.length() != 10) {
+			if (phoneNum.length() != 10) { // length checking 
 				success.setText("invalid phone number length");
 				return;
 			}
