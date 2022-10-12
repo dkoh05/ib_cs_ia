@@ -121,7 +121,7 @@ public class ReservationGUI implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == bookBtn) {
-			// get values from user
+			// get values from textbox & store in a variable
 			int guestNum = (Integer) guestNumSpinner.getValue();
 			LocalDate checkinDate = checkinDatePicker.getDate();
 			String checkinDateString = checkinDate.toString();
@@ -138,15 +138,16 @@ public class ReservationGUI implements ActionListener {
 				success.setText("Only a number between 1 to 10 guests allowed!");
 				return;
 			}
-			// validate if check-in is greater than check-out time 
+			// validate if check-in time is greater than check-out time 
 			if((checkoutDate.compareTo(checkinDate)) < 0) {
 				success.setText("Check-in date is greater than the check-out date!");
 				return;
 			}
+			// validate if check-in date is less than check-out time
 			if(checkinTime.compareTo(LocalTime.parse("14:00:00")) < 0) {
 				success.setText("Check-in time is greater than the check-out time");
 				return;
-			}
+			} // vice versa to above
 			if(checkoutTime.compareTo(LocalTime.parse("12:00:00")) > 0) {
 				success.setText("Check-out time is greater than the check-in time");
 				return;
@@ -172,17 +173,15 @@ public class ReservationGUI implements ActionListener {
 				stmt.setString(6, checkoutDateString);
 				
 				ResultSet rs = stmt.executeQuery();
-				
-				// check if there is an existing reservation
 				int count = 0;
-				while(rs.next()) {
+				while(rs.next()) { 
 					count++;
 				}
-				if(count !=0) {
+				if(count !=0) { // check if there is an existing reservation
 					success.setText("An existing reservation is overlapping with the inputted reservation!");
 					return;
 				}
-				// insert
+				// insert inputted values and execute insertQuery
 				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
 				insertStmt.setInt(1, guestNum);
 				insertStmt.setString(2, checkinDateString);

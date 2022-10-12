@@ -81,49 +81,44 @@ public class LoginGUI implements ActionListener {
 	}
 
 	@Override
-	// validation
 	public void actionPerformed(ActionEvent e) {
-		
 		if(e.getSource() == loginBtn) { // user click 'login' button
-			// get the username and password from the textbox
+			// obtain username and password from input and store into a variable
 			String username = userText.getText().toLowerCase();
 			String password = passwordText.getText();
 
-			// username length check
-			if (username.length() < 3) {
-				success.setText("Username is not long enough!"); 
+			if (username.length() < 3) { // username length check
+				success.setText("Username is not long enough!");
 				return;
 			}
-			// password length check
-			if (password.length() < 8) {
+
+			if (password.length() < 8) { // password length check
 				success.setText("Password is not long enough!");
 				return;
 			}
 			
 
 			String query = "SELECT username, password, role FROM user WHERE username=?"; // query to match inputted username with username in database
-
 			Connection con = SQLConnect.connect(); // connect to database
 			try {
 				PreparedStatement stmt = con.prepareStatement(query); // create a statement that contains query
 				stmt.setString(1, username); // parameter for username
 				ResultSet rs = stmt.executeQuery(); // execute the query and return the result 
-
-				int count = 0; // counter for number for records in the rs
-
+				
 				String pass = "";
 				String role = "";
+				int count = 0; // counter for number for records in the rs
 				while (rs.next()) {
-					pass = rs.getString("password"); // gets the password in the query
-					role = rs.getString("role");
+					pass = rs.getString("password"); // gets password in query
+					role = rs.getString("role"); // gets user role (guest/admin) in query
 					count++;
 				}
 				if (count != 0 && pass.equals(password)) { // presense checking
-					if(role.equals("guest")) {
+					if(role.equals("guest")) { // designate guest to welcomePage
 						frame.dispose();
 						WelcomePage welcomePage = new WelcomePage(username);
-					} else if(role.equals("admin")) {
-						frame.dispose();
+					} else if(role.equals("admin")) { // designate admin to pendingOrders page
+						frame.dispose();	
 						PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
 					}
 					success.setText("Successful login!");
@@ -131,7 +126,7 @@ public class LoginGUI implements ActionListener {
 					success.setText("Failed login! Please try again.");
 					return;
 				}
-				con.close();
+				con.close(); // disconnect to database
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -140,7 +135,7 @@ public class LoginGUI implements ActionListener {
 			frame.dispose(); // close the login page
 			RegisterGUI signupPage = new RegisterGUI(); // create a register page
 			
-		} else if (e.getSource() == forgotPwBtn) {
+		} else if (e.getSource() == forgotPwBtn) { // create a page to reset account password
 			frame.dispose();
 			GetPwTokenGUI getToken = new GetPwTokenGUI();
 		}

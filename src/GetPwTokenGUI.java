@@ -76,9 +76,9 @@ public class GetPwTokenGUI implements ActionListener {
 		int targetStringLength = 6;
 		Random random = new Random();
 		StringBuilder buffer = new StringBuilder(targetStringLength);
-		for (int i = 0; i < targetStringLength; i++) {
-			int randomInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1));
-			buffer.append((char) randomInt);
+		for (int i = 0; i < targetStringLength; i++) { 
+			int randomInt = leftLimit + (int) (random.nextFloat() * (rightLimit - leftLimit + 1)); // create a random character 
+			buffer.append((char) randomInt); // append characters into a string
 		}
 		String generatedString = buffer.toString();
 
