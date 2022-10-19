@@ -12,6 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 public class UsersListGUI implements ActionListener {
 	JFrame frame = new JFrame();
@@ -29,14 +34,12 @@ public class UsersListGUI implements ActionListener {
 
 	JScrollPane sp = new JScrollPane(table);
 	
+	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
 	JLabel searchTitle = new JLabel("Search for a specific value: ");
 	JTextField searchBar = new JTextField();
 	
-	
 	JButton searchBtn = new JButton("SEARCH ACCOUNTS");
 	
-	
-
 	UsersListGUI() {
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
@@ -66,6 +69,12 @@ public class UsersListGUI implements ActionListener {
 		logoutBtn.addActionListener(this);
 		panel.add(logoutBtn);
 		
+		searchTitle.setBounds(100, 90, 175, 25);
+		panel.add(searchTitle);
+		
+		searchBar.setBounds(300, 90, 700, 25);
+		panel.add(searchBar);
+		
 		Connection con = SQLConnect.connect();
 
 		String query = "SELECT * from user;";
@@ -88,17 +97,46 @@ public class UsersListGUI implements ActionListener {
 		} catch (Exception e4) {
 			e4.printStackTrace();
 		}
-		
+
+		// searching for a specific value functionality
+		table.setRowSorter(rowSorter);
+
+		searchBar.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+																				// choose Tools | Templates.
+			}
+
+		});
 		sp.setBounds(100, 150, 900, 400);
 		panel.add(sp);
-		
-		searchTitle.setBounds(100, 90, 175, 25);
-		panel.add(searchTitle);
-		
-		searchBar.setBounds(300, 90, 700, 25);
-		panel.add(searchBar);
-		
+
 //		searchBtn.setBounds(null);
+		
 		
 		frame.setVisible(true);
 	}

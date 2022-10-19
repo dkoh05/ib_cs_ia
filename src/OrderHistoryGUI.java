@@ -18,9 +18,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
@@ -64,17 +69,16 @@ public class OrderHistoryGUI implements ActionListener{
 	String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
 			"Check-out Time", "Note" };
 	JTable table = new JTable(allOrders, columnNames);
-
+	
+	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
 	JScrollPane sp = new JScrollPane(table);
-
-	int index;
-	
-
-	JLabel success = new JLabel();
-	
 	JLabel searchTitle = new JLabel("Search for a specific value: ");
 	JTextField searchBar = new JTextField();
 
+	int index;
+
+	JLabel success = new JLabel();
+	
 	Connection con = SQLConnect.connect();
 	
 	OrderHistoryGUI(){
@@ -211,6 +215,41 @@ public class OrderHistoryGUI implements ActionListener{
 			}
 		});
 		
+		// searching for a specific value functionality
+		table.setRowSorter(rowSorter);
+
+		searchBar.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+																				// choose Tools | Templates.
+			}
+
+		});
+
 		sp.setBounds(100, 150, 900, 350);
 		panel.add(sp);
 		

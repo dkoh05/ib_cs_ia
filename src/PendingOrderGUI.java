@@ -20,11 +20,16 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
@@ -70,8 +75,11 @@ public class PendingOrderGUI implements ActionListener {
 	String[] columnNames = { "ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
 			"Check-out Time", "Note" };
 	JTable table = new JTable(pendingOrders, columnNames);
-
+	
+	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
 	JScrollPane sp = new JScrollPane(table);
+	JLabel searchTitle = new JLabel("Search for a specific value: ");
+	JTextField searchBar = new JTextField();
 
 	JLabel success = new JLabel();
 
@@ -79,8 +87,7 @@ public class PendingOrderGUI implements ActionListener {
 
 	int index;
 	
-	JLabel searchTitle = new JLabel("Search for a specific value: ");
-	JTextField searchBar = new JTextField();
+
 
 	PendingOrderGUI() {
 		frame.setSize(1200, 800);
@@ -212,7 +219,7 @@ public class PendingOrderGUI implements ActionListener {
 					noteText.setText(pendingOrders[index][7]);
 					usernameText.setEditable(false);
 				} else {
-					usernameText.setText(null);Q
+					usernameText.setText(null);
 					checkinDatePicker.setDate(null);
 					checkinTimePicker.setText(null);
 
@@ -227,6 +234,42 @@ public class PendingOrderGUI implements ActionListener {
 			}
 		});
 
+
+		// searching for a specific value functionality
+		table.setRowSorter(rowSorter);
+
+		searchBar.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				String text = searchBar.getText();
+
+				if (text.trim().length() == 0) {
+					rowSorter.setRowFilter(null);
+				} else {
+					rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+				}
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods,
+																				// choose Tools | Templates.
+			}
+
+		});
+		
 		sp.setBounds(100, 150, 900, 350);
 		panel.add(sp);
 
@@ -301,7 +344,7 @@ public class PendingOrderGUI implements ActionListener {
 			pendingOrders[index][6] = checkoutTimeString;
 			pendingOrders[index][7] = note;
 			table.repaint(); // update data on the UI
-		} else if(e.getSource() == cancelBtn) {
+		} else if(e.getSource() == cancelBtn && pendingOrders[index][0]!=null) {
 			int canId = Integer.parseInt(pendingOrders[index][0]);
 			try {
 				String delQuery = "DELETE FROM reservation WHERE id=?";
@@ -326,7 +369,7 @@ public class PendingOrderGUI implements ActionListener {
 			}
 			table.repaint();
 
-		} else if (e.getSource() == completedBtn) {
+		} else if (e.getSource() == completedBtn && pendingOrders[index][0]!=null) {
 			int compId= Integer.parseInt(pendingOrders[index][0]);
 			try {
 				String completedQuery = "UPDATE reservation SET is_completed = 1 WHERE id=?";
@@ -351,6 +394,7 @@ public class PendingOrderGUI implements ActionListener {
 			
 			
 		}
+		
 
 	}
 }
