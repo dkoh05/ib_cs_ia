@@ -170,9 +170,7 @@ public class PendingOrderGUI implements ActionListener {
 		
 
 		// change the data and column names to correspond with database
-
 		String query = "SELECT * from reservation where is_completed = 0;";
-
 		try {
 			PreparedStatement stmt = con.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
@@ -214,7 +212,7 @@ public class PendingOrderGUI implements ActionListener {
 					noteText.setText(pendingOrders[index][7]);
 					usernameText.setEditable(false);
 				} else {
-					usernameText.setText(null);
+					usernameText.setText(null);Q
 					checkinDatePicker.setDate(null);
 					checkinTimePicker.setText(null);
 

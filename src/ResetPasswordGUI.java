@@ -80,9 +80,6 @@ public class ResetPasswordGUI implements ActionListener{
 		
 	}
 
-
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginBtn) {
@@ -129,13 +126,9 @@ public class ResetPasswordGUI implements ActionListener{
 			} catch (Exception e2){
 				e2.printStackTrace();
 			}
-			
 			success.setText("Successful password reset!");
 			frame.dispose();
 			LoginGUI login = new LoginGUI();
-			
-			
-			
 		}
 		
 	}
