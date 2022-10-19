@@ -137,7 +137,7 @@ public class RegisterGUI implements ActionListener{
 				return;
 			}
 			
-			for(int i = 0;i<10;i++) {
+			for(int i = 0;i<10;i++) { // check if each character of the phone no. is a single-digit integer
 				if(phoneNum.charAt(i) < '0' || phoneNum.charAt(i) > '9') {
 					success.setText("invalid phone number");
 					return;
