@@ -308,13 +308,8 @@ public class PendingOrderGUI implements ActionListener {
 			try {
 				String updateQuery = "UPDATE reservation set username = ?,"
 						+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
-						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
-
-				
+						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";				
 				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
-				
-
-				
 				updateStmt.setString(1, usernameText.getText());
 				updateStmt.setInt(2, guestNum);
 				updateStmt.setString(3, checkinDateString);
@@ -323,13 +318,11 @@ public class PendingOrderGUI implements ActionListener {
 				updateStmt.setString(6, checkoutTimeString);
 				updateStmt.setString(7, note);
 				updateStmt.setInt(8, id);
-				
 				int updateCount = updateStmt.executeUpdate();
 				if (updateCount == 0) {
 					success.setText("Nothing has been updated!");
 					return;
 				}
-
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
