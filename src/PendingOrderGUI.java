@@ -71,9 +71,9 @@ public class PendingOrderGUI implements ActionListener {
 	JButton cancelBtn = new JButton("CANCEL ORDER"); // cencel order
 	JButton completedBtn = new JButton("COMPLETE ORDER"); // click when an order is completed
 
-	String[][] pendingOrders = new String[1000][8];
+	String[][] pendingOrders = new String[1000][10];
 	String[] columnNames = { "ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
-			"Check-out Time", "Note" };
+			"Check-out Time", "Note", "Total Price", "Total Cost" };
 	JTable table = new JTable(pendingOrders, columnNames);
 	
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
@@ -172,7 +172,7 @@ public class PendingOrderGUI implements ActionListener {
 		searchTitle.setBounds(100, 90, 175, 25);
 		panel.add(searchTitle);
 		
-		searchBar.setBounds(300, 90, 700, 25);
+		searchBar.setBounds(300, 90, 750, 25);
 		panel.add(searchBar);
 		
 
@@ -192,7 +192,10 @@ public class PendingOrderGUI implements ActionListener {
 				String checkoutDate = rs.getString("checkout_date");
 				String checkoutTime = rs.getString("checkout_time");
 				String note = rs.getString("note");
-				String[] row = { id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note };
+				String totalPrice = rs.getString("total_price");
+				String totalCost = rs.getString("total_cost");
+				
+				String[] row = { id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note, totalPrice, totalCost};
 				pendingOrders[count] = row;
 				count++;
 			}
@@ -270,7 +273,7 @@ public class PendingOrderGUI implements ActionListener {
 
 		});
 		
-		sp.setBounds(100, 150, 900, 350);
+		sp.setBounds(100, 150, 950, 350);
 		panel.add(sp);
 
 		frame.add(panel);
