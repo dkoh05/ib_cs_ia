@@ -1,13 +1,15 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.NumberFormat;
 
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,9 +27,6 @@ public class FinInfoGUI implements ActionListener{
 	private JButton usersListBtn = new JButton("USERS LIST");
 	private JButton logoutBtn = new JButton("LOGOUT");
 	
-    NumberFormat format = NumberFormat.getInstance();
-    NumberFormatter formatter = new NumberFormatter(format);
-	
 	JLabel currentPriceLabel = new JLabel("Current price of one reservation: ");
 	JLabel rentLabel = new JLabel("Rent: ");
 	JLabel utilitiesLabel = new JLabel("Utilities (water/electricity): ");
@@ -40,11 +39,11 @@ public class FinInfoGUI implements ActionListener{
 	JLabel totalCostLabel = new JLabel("Total Costs: ");
 	JLabel totalProfitLabel = new JLabel("Total Profit: ");
 	
-	JFormattedTextField currentPriceText = new JFormattedTextField(formatter);
-	JFormattedTextField rentText = new JFormattedTextField(formatter);
-	JFormattedTextField utilitiesText = new JFormattedTextField(formatter);
-	JFormattedTextField gardeningText = new JFormattedTextField(formatter);
-	JFormattedTextField cleaningText = new JFormattedTextField(formatter);
+	JTextField currentPriceText = new JTextField();
+	JTextField rentText = new JTextField();
+	JTextField utilitiesText = new JTextField();
+	JTextField gardeningText = new JTextField();
+	JTextField cleaningText = new JTextField();
 	
 	JTextField totalRevText = new JTextField();
 	JTextField totalCostText = new JTextField();
@@ -53,11 +52,6 @@ public class FinInfoGUI implements ActionListener{
 	JLabel success = new JLabel("");
 	
 	Connection con = SQLConnect.connect();
-	
-	
-
-	
-	
 	
 	FinInfoGUI() { 
 		frame.setSize(1200, 800);
@@ -137,32 +131,55 @@ public class FinInfoGUI implements ActionListener{
 		success.setBounds(400, 350, 400, 25);
 		panel.add(success);
 		
-	    formatter.setValueClass(Integer.class);
-	    formatter.setMinimum(0);
-	    formatter.setMaximum(Integer.MAX_VALUE);
-	    formatter.setAllowsInvalid(false);
-	    // If you want the value to be committed on each keystroke instead of focus lost
-	    formatter.setCommitsOnValidEdit(true);
 	    
 	    // display current prices on the page
 	    String displayQuery = "SELECT * from financial;";
 	    try {
 	    	PreparedStatement displayStmt = con.prepareStatement(displayQuery);
 			ResultSet rs = displayStmt.executeQuery();
-			currentPriceText.setValue(rs.getInt("price"));
-			rentText.setValue(rs.getInt("rent_cost"));
-			utilitiesText.setValue(rs.getInt("utilities_cost"));
-			gardeningText.setValue(rs.getInt("gardening_cost"));
-			cleaningText.setValue(rs.getInt("cleaning_cost"));
+			currentPriceText.setText(String.valueOf(rs.getInt("price")));
+			rentText.setText(String.valueOf(rs.getInt("rent_cost")));
+			utilitiesText.setText(String.valueOf(rs.getInt("utilities_cost")));
+			gardeningText.setText(String.valueOf(rs.getInt("gardening_cost")));
+			cleaningText.setText(String.valueOf(rs.getInt("cleaning_cost")));
 	    } catch (Exception e) {
 	    	e.printStackTrace();
 	    }
 	    
-	    
-		
+	    currentPriceText.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+	    		success.setText("");
+	    		
+	    	}
+	    });
+	    rentText.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+	    		success.setText("");
+	    		
+	    	}
+	    });
+	    utilitiesText.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+	    		success.setText("");
+	    		
+	    	}
+	    });
+	    gardeningText.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+	    		success.setText("");
+	    		
+	    	}
+	    });
+	    cleaningText.addMouseListener(new MouseAdapter() {
+	    	public void mouseClicked(MouseEvent e) {
+	    		success.setText("");
+	    		
+	    	}
+	    });
 		frame.setVisible(true);
 	}
-
+	
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -179,11 +196,18 @@ public class FinInfoGUI implements ActionListener{
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI();
 		} else if (e.getSource() == saveBtn) {
-			int currentPrice = (int) currentPriceText.getValue();
-			int rent = (int) rentText.getValue();
-			int utilities = (int) utilitiesText.getValue();
-			int gardening = (int) gardeningText.getValue();
-			int cleaning = (int) cleaningText.getValue();
+			int currentPrice = 0, rent=0, utilities=0, gardening=0, cleaning=0;
+			try {
+				currentPrice = Integer.parseInt(currentPriceText.getText());
+				rent = Integer.parseInt(rentText.getText());
+				utilities = Integer.parseInt(utilitiesText.getText());
+				gardening = Integer.parseInt(gardeningText.getText());
+				cleaning = Integer.parseInt(cleaningText.getText());
+			} catch (Exception e3){
+				success.setText("Invalid number! ");
+				return;
+			}
+
 			try {
 				String updateQuery = "UPDATE financial set price = ?, rent_cost=?, utilities_cost=?, gardening_cost=?, "
 						+ "cleaning_cost=? where id = 1;";
