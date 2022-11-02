@@ -28,9 +28,11 @@ public class LoginGUI implements ActionListener {
 	JButton forgotPwBtn = new JButton("Forgotten Password?");
 	JFrame frame = new JFrame();
 	JPanel panel = new JPanel();
+	
+	Connection conn;
 
-	LoginGUI() {
-
+	LoginGUI(Connection con) {
+		conn = con;
 		frame.setSize(450, 250);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,9 +101,8 @@ public class LoginGUI implements ActionListener {
 			
 
 			String query = "SELECT username, password, role FROM user WHERE username=?"; // query to match inputted username with username in database
-			Connection con = SQLConnect.connect(); // connect to database
 			try {
-				PreparedStatement stmt = con.prepareStatement(query); // create a statement that contains query
+				PreparedStatement stmt = conn.prepareStatement(query); // create a statement that contains query
 				stmt.setString(1, username); // parameter for username
 				ResultSet rs = stmt.executeQuery(); // execute the query and return the result 
 				
@@ -116,28 +117,27 @@ public class LoginGUI implements ActionListener {
 				if (count != 0 && pass.equals(password)) { // presense checking
 					if(role.equals("guest")) { // designate guest to welcomePage
 						frame.dispose();
-						WelcomePage welcomePage = new WelcomePage(username);
+						WelcomePage welcomePage = new WelcomePage(username, conn);
 					} else if(role.equals("admin")) { // designate admin to pendingOrders page
 						frame.dispose();	
-						PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
+						PendingOrderGUI pendingOrderPage = new PendingOrderGUI(conn);
 					}
 					success.setText("Successful login!");
 				} else {
 					success.setText("Failed login! Please try again.");
 					return;
 				}
-				con.close(); // disconnect to database
 			} catch (SQLException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == registerBtn) {
 			frame.dispose(); // close the login page
-			RegisterGUI signupPage = new RegisterGUI(); // create a register page
+			RegisterGUI signupPage = new RegisterGUI(conn); // create a register page
 			
 		} else if (e.getSource() == forgotPwBtn) { // create a page to reset account password
 			frame.dispose();
-			GetPwTokenGUI getToken = new GetPwTokenGUI();
+			GetPwTokenGUI getToken = new GetPwTokenGUI(conn);
 		}
 		
 	}

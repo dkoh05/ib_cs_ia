@@ -40,7 +40,10 @@ public class UsersListGUI implements ActionListener {
 	
 	JButton searchBtn = new JButton("SEARCH ACCOUNTS");
 	
-	UsersListGUI() {
+	Connection conn;
+	
+	UsersListGUI(Connection con) {
+		conn = con;
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,12 +78,11 @@ public class UsersListGUI implements ActionListener {
 		searchBar.setBounds(300, 90, 700, 25);
 		panel.add(searchBar);
 		
-		Connection con = SQLConnect.connect();
 
 		String query = "SELECT * from user;";
 
 		try {
-			PreparedStatement stmt = con.prepareStatement(query);
+			PreparedStatement stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			int count = 0;
 
@@ -145,16 +147,16 @@ public class UsersListGUI implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == pendingOrderBtn) {
 			frame.dispose();
-			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
+			PendingOrderGUI pendingOrderPage = new PendingOrderGUI(conn);
 		} else if (e.getSource() == orderHistoryBtn) {
 			frame.dispose();
-			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
+			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI(conn);
 		} else if (e.getSource() == finInfoBtn) {
 			frame.dispose();
-			FinInfoGUI finInfoPage = new FinInfoGUI();
+			FinInfoGUI finInfoPage = new FinInfoGUI(conn);
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		} 
 		
 		// search id, username, note

@@ -51,9 +51,10 @@ public class FinInfoGUI implements ActionListener{
 	
 	JLabel success = new JLabel("");
 	
-	Connection con = SQLConnect.connect();
+	Connection conn;
 	
-	FinInfoGUI() { 
+	FinInfoGUI(Connection con) { 
+		conn = con;
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,16 +111,19 @@ public class FinInfoGUI implements ActionListener{
 		
 		totalRevLabel.setBounds(400, 400, 175, 25);
 		totalRevText.setBounds(600, 400, 175, 25);
+		totalRevText.setEditable(false);
 		panel.add(totalRevLabel);
 		panel.add(totalRevText);
 		
 		totalCostLabel.setBounds(400, 450, 175, 25);
 		totalCostText.setBounds(600, 450, 175, 25);
+		totalCostText.setEditable(false);
 		panel.add(totalCostLabel);
 		panel.add(totalCostText);
 		
 		totalProfitLabel.setBounds(400, 500, 175, 25);
 		totalProfitText.setBounds(600, 500, 175, 25);
+		totalProfitText.setEditable(false);
 		panel.add(totalProfitLabel);
 		panel.add(totalProfitText);
 		
@@ -135,7 +139,7 @@ public class FinInfoGUI implements ActionListener{
 	    // display current prices on the page
 	    String displayQuery = "SELECT * from financial;";
 	    try {
-	    	PreparedStatement displayStmt = con.prepareStatement(displayQuery);
+	    	PreparedStatement displayStmt = conn.prepareStatement(displayQuery);
 			ResultSet rs = displayStmt.executeQuery();
 			currentPriceText.setText(String.valueOf(rs.getInt("price")));
 			rentText.setText(String.valueOf(rs.getInt("rent_cost")));
@@ -177,6 +181,35 @@ public class FinInfoGUI implements ActionListener{
 	    	}
 	    });
 		frame.setVisible(true);
+		
+		// calculate revenue. costs and profit
+		int totalRev = 0, totalCost = 0, totalProfit = 0;
+		
+		String revSumQuery = "select sum(total_price) from reservation where is_completed = 1;";
+		try {
+			PreparedStatement sumStmt = conn.prepareStatement(revSumQuery);
+			ResultSet rs = sumStmt.executeQuery();
+			rs.next();
+			totalRev = rs.getInt(1);
+			totalRevText.setText(String.valueOf(totalRev));
+		} catch (Exception e3) {
+			e3.printStackTrace();
+		}
+		
+		String costSumQuery = "select sum(total_cost) from reservation where is_completed = 1;";
+		try {
+			PreparedStatement sumStmt = conn.prepareStatement(costSumQuery);
+			ResultSet rs = sumStmt.executeQuery();
+			rs.next();
+			totalCost = rs.getInt(1);
+			totalCostText.setText(String.valueOf(totalCost));
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
+		
+
+		totalProfit = totalRev - totalCost;
+		totalProfitText.setText(String.valueOf(totalProfit));
 	}
 	
 	
@@ -185,16 +218,16 @@ public class FinInfoGUI implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
 			frame.dispose();
-			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
+			PendingOrderGUI pendingOrderPage = new PendingOrderGUI(conn);
 		} else if(e.getSource() == orderHistoryBtn) {
 			frame.dispose();
-			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
+			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI(conn);
 		} else if(e.getSource() == usersListBtn) {
 			frame.dispose();
-			UsersListGUI usersListPage = new UsersListGUI();
+			UsersListGUI usersListPage = new UsersListGUI(conn);
 		} else if(e.getSource() == logoutBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		} else if (e.getSource() == saveBtn) {
 			int currentPrice = 0, rent=0, utilities=0, gardening=0, cleaning=0;
 			try {
@@ -203,7 +236,7 @@ public class FinInfoGUI implements ActionListener{
 				utilities = Integer.parseInt(utilitiesText.getText());
 				gardening = Integer.parseInt(gardeningText.getText());
 				cleaning = Integer.parseInt(cleaningText.getText());
-			} catch (Exception e3){
+			} catch (Exception e4){
 				success.setText("Invalid number! ");
 				return;
 			}
@@ -212,7 +245,7 @@ public class FinInfoGUI implements ActionListener{
 				String updateQuery = "UPDATE financial set price = ?, rent_cost=?, utilities_cost=?, gardening_cost=?, "
 						+ "cleaning_cost=? where id = 1;";
 
-				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
 				updateStmt.setInt(1, currentPrice);
 				updateStmt.setInt(2, rent);
 				updateStmt.setInt(3, utilities);
@@ -225,11 +258,20 @@ public class FinInfoGUI implements ActionListener{
 					return;
 				}
 
-			} catch (Exception e2) {
-				e2.printStackTrace();
+			} catch (Exception e5) {
+				e5.printStackTrace();
 			}
 			success.setText("You have successfully changed prices!");
 
 		}
 	}
 }
+
+// pick all total_price values where it's is_completed = 1
+// 
+
+
+
+
+
+

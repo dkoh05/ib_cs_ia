@@ -34,8 +34,10 @@ public class RegisterGUI implements ActionListener{
 	JButton signupBtn = new JButton("Sign-up");
 	JButton loginBtn = new JButton("Log-In");
 	JLabel success = new JLabel("");
+	Connection conn;
 	
-	RegisterGUI(){
+	RegisterGUI(Connection con){
+		conn = con;
 		frame.setSize(400, 400);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -109,7 +111,7 @@ public class RegisterGUI implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		}
 		if(e.getSource() == signupBtn) {
 			// obtain input values from text box 
@@ -158,10 +160,10 @@ public class RegisterGUI implements ActionListener{
 			String insertQuery = "INSERT INTO user values (?,?,?,?,?,?)";
 			
 			
-			Connection con = SQLConnect.connect(); // connect to master.db database
+			 // connect to master.db database
 			
 			try {
-				PreparedStatement stmt = con.prepareStatement(query); // create a statement variable to store the query
+				PreparedStatement stmt = conn.prepareStatement(query); // create a statement variable to store the query
 				stmt.setString(1, username); // replace parameters
 				ResultSet rs = stmt.executeQuery(); //  values into into database
 				// check if there are duplicate accounts
@@ -176,7 +178,7 @@ public class RegisterGUI implements ActionListener{
 				} 
 				
 				// insert account details into sql database
-				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+				PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
 				insertStmt.setString(1, username);
 				insertStmt.setString(2, password);
 				insertStmt.setString(3, fullName);
@@ -195,7 +197,7 @@ public class RegisterGUI implements ActionListener{
 			}
 			success.setText("Successful sign-up!");
 			frame.dispose();
-			WelcomePage welcomePage = new WelcomePage(username);
+			WelcomePage welcomePage = new WelcomePage(username, conn);
 			
 			
 

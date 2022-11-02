@@ -1,14 +1,13 @@
+import java.sql.Connection;
 
 public class Main {
 
 	public static void main(String[] args) {
 //		UsersListGUI users = new UsersListGUI();
 //		PendingOrderGUI pending = new PendingOrderGUI();
-		FinInfoGUI finInfo = new FinInfoGUI();
-		
-		
-		
-		
+		Connection con = SQLConnect.connect();
+		FinInfoGUI finInfo = new FinInfoGUI(con);
+
 	}
 
 }

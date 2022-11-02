@@ -69,7 +69,7 @@ public class OrderHistoryGUI implements ActionListener{
 	String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
 			"Check-out Time", "Note" };
 	JTable table = new JTable(allOrders, columnNames);
-	
+
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
 	JScrollPane sp = new JScrollPane(table);
 	JLabel searchTitle = new JLabel("Search for a specific value: ");
@@ -78,10 +78,10 @@ public class OrderHistoryGUI implements ActionListener{
 	int index;
 
 	JLabel success = new JLabel();
-	
-	Connection con = SQLConnect.connect();
-	
-	OrderHistoryGUI(){
+	Connection conn;
+
+	OrderHistoryGUI(Connection con) {
+		conn = con;
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -160,7 +160,7 @@ public class OrderHistoryGUI implements ActionListener{
 		String query = "SELECT * from reservation where is_completed = 1;";
 
 		try {
-			PreparedStatement stmt = con.prepareStatement(query);
+			PreparedStatement stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			int count = 0;
 
@@ -261,16 +261,16 @@ public class OrderHistoryGUI implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == pendingOrderBtn) {
 			frame.dispose();
-			PendingOrderGUI pendingOrderPage = new PendingOrderGUI();
+			PendingOrderGUI pendingOrderPage = new PendingOrderGUI(conn);
 		} else if(e.getSource() == finInfoBtn) {
 			frame.dispose();
-			FinInfoGUI finInfoPage = new FinInfoGUI();
+			FinInfoGUI finInfoPage = new FinInfoGUI(conn);
 		} else if(e.getSource() == usersListBtn) {
 			frame.dispose();
-			UsersListGUI usersListPage = new UsersListGUI();
+			UsersListGUI usersListPage = new UsersListGUI(conn);
 		} else if(e.getSource() == logoutBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		} else if(e.getSource() == saveBtn && allOrders[index][0] != null) {
 			int id = Integer.parseInt(allOrders[index][0]);
 			int guestNum = (Integer) guestNumSpinner.getValue();
@@ -289,7 +289,7 @@ public class OrderHistoryGUI implements ActionListener{
 						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
 
 				
-				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
 				
 
 				

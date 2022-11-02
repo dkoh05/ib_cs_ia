@@ -4,6 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -22,8 +23,10 @@ public class ThankYouGUI implements ActionListener {
 	JButton makeBkgBtn = new JButton("Make Another Reservation!");
 	
 	String username = "";
+	Connection conn;
 	
-	ThankYouGUI(String us){
+	ThankYouGUI(String us, Connection con){
+		conn = con;
 		frame.setSize(1200, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,12 +66,12 @@ public class ThankYouGUI implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == logoutBtn) { // user click 'logout' button
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI(); 
+			LoginGUI loginPage = new LoginGUI(conn); 
 			// close welcome page and open login page
 		} else if (e.getSource() == makeBkgBtn) { 
 			// close welcome page and open reservation page
 			frame.dispose();
-			ReservationGUI reservationPage = new ReservationGUI(username);
+			ReservationGUI reservationPage = new ReservationGUI(username, conn);
 		}
 	}
 }

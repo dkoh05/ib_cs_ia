@@ -28,14 +28,16 @@ public class ResetPasswordGUI implements ActionListener{
 	JTextField newPwText = new JTextField();
 	JTextField confirmPwText = new JTextField();
 	JLabel success = new JLabel();
-	
+
 	JButton resetPwBtn = new JButton("RESET PASSWORD");
 	JButton loginBtn = new JButton("<- LOGIN");
-	
-	
+
 	String username = "";
 	
-	ResetPasswordGUI(String us) {
+	Connection conn;
+
+	ResetPasswordGUI(String us, Connection con) {
+		conn = con;
 		frame.setSize(450, 350);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -84,7 +86,7 @@ public class ResetPasswordGUI implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == loginBtn) {
 			frame.dispose();
-			LoginGUI login = new LoginGUI();
+			LoginGUI login = new LoginGUI(conn);
 			
 		} else if(e.getSource() == resetPwBtn) {
 			String token = tokenText.getText();
@@ -98,10 +100,10 @@ public class ResetPasswordGUI implements ActionListener{
 			
 			String query = "SELECT username, token from reset_pw_token where username=?";
 			
-			Connection con = SQLConnect.connect();
+			
 			
 			try {
-				PreparedStatement stmt = con.prepareStatement(query);
+				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, username);
 				ResultSet rs = stmt.executeQuery();
 				
@@ -112,7 +114,7 @@ public class ResetPasswordGUI implements ActionListener{
 					tokenDb = rs.getString("token");
 					if(tokenDb.equals(token)) { // comparing the token from the database to the inputted token
 						String updateQuery = "UPDATE user SET password=? WHERE username=?";
-						PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+						PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
 						updateStmt.setString(1, newPw);
 						updateStmt.setString(2, username);
 						
@@ -128,7 +130,7 @@ public class ResetPasswordGUI implements ActionListener{
 			}
 			success.setText("Successful password reset!");
 			frame.dispose();
-			LoginGUI login = new LoginGUI();
+			LoginGUI login = new LoginGUI(conn);
 		}
 		
 	}

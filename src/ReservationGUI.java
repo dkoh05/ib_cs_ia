@@ -51,13 +51,13 @@ public class ReservationGUI implements ActionListener {
 	
 	JButton bookBtn = new JButton("Book Reservation");
 	JLabel success = new JLabel();
-	
+
 	String username = "";
 
+	Connection conn;
 
-	
-	
-	ReservationGUI(String us){
+	ReservationGUI(String us, Connection con) {
+		conn = con;
 		frame.setSize(500, 450);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -157,14 +157,14 @@ public class ReservationGUI implements ActionListener {
 					+ "values (?,?,?,?,?,?,?,?)";
 			
 			
-			Connection con = SQLConnect.connect();
+			
 			String query = "select * from reservation where ? BETWEEN checkin_date AND checkout_date OR ? BETWEEN checkin_date AND checkout_date "
 					+ "OR ? > checkin_date AND ? < checkout_date "
 					+ "OR ? < checkin_date AND ? > checkout_date;";
 			
 			try {
 				// check if booking is available/not overlap with other booking
-				PreparedStatement stmt = con.prepareStatement(query);
+				PreparedStatement stmt = conn.prepareStatement(query);
 				stmt.setString(1, checkoutDateString);
 				stmt.setString(2, checkinDateString);
 				stmt.setString(3, checkinDateString);
@@ -182,7 +182,7 @@ public class ReservationGUI implements ActionListener {
 					return;
 				}
 				// insert inputted values and execute insertQuery
-				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+				PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
 				insertStmt.setInt(1, guestNum);
 				insertStmt.setString(2, checkinDateString);
 				insertStmt.setString(3, checkinTimeString);
@@ -211,10 +211,10 @@ public class ReservationGUI implements ActionListener {
 				// send email
 			} 
 			frame.dispose();
-			ThankYouGUI thankyou_page = new ThankYouGUI(username);
+			ThankYouGUI thankyou_page = new ThankYouGUI(username, conn);
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		}
 		
 		

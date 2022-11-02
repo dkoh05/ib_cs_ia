@@ -83,13 +83,12 @@ public class PendingOrderGUI implements ActionListener {
 
 	JLabel success = new JLabel();
 
-	Connection con = SQLConnect.connect();
-
 	int index;
 	
+	Connection conn;
 
-
-	PendingOrderGUI() {
+	PendingOrderGUI(Connection con) {
+		conn = con;
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -179,7 +178,7 @@ public class PendingOrderGUI implements ActionListener {
 		// change the data and column names to correspond with database
 		String query = "SELECT * from reservation where is_completed = 0;";
 		try {
-			PreparedStatement stmt = con.prepareStatement(query);
+			PreparedStatement stmt = conn.prepareStatement(query);
 			ResultSet rs = stmt.executeQuery();
 			int count = 0;
 
@@ -284,16 +283,16 @@ public class PendingOrderGUI implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == orderHistoryBtn) {
 			frame.dispose();
-			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI();
+			OrderHistoryGUI orderHistoryPage = new OrderHistoryGUI(conn);
 		} else if (e.getSource() == finInfoBtn) {
 			frame.dispose();
-			FinInfoGUI finInfoPage = new FinInfoGUI();
+			FinInfoGUI finInfoPage = new FinInfoGUI(conn);
 		} else if (e.getSource() == usersListBtn) {
 			frame.dispose();
-			UsersListGUI usersListPage = new UsersListGUI();
+			UsersListGUI usersListPage = new UsersListGUI(conn);
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		} else if (e.getSource() == saveBtn && pendingOrders[index][0]!=null) {
 			
 
@@ -312,7 +311,7 @@ public class PendingOrderGUI implements ActionListener {
 				String updateQuery = "UPDATE reservation set username = ?,"
 						+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
 						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";				
-				PreparedStatement updateStmt = con.prepareStatement(updateQuery);
+				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
 				updateStmt.setString(1, usernameText.getText());
 				updateStmt.setInt(2, guestNum);
 				updateStmt.setString(3, checkinDateString);
@@ -344,7 +343,7 @@ public class PendingOrderGUI implements ActionListener {
 			int canId = Integer.parseInt(pendingOrders[index][0]);
 			try {
 				String delQuery = "DELETE FROM reservation WHERE id=?";
-				PreparedStatement delStmt = con.prepareStatement(delQuery);
+				PreparedStatement delStmt = conn.prepareStatement(delQuery);
 				delStmt.setInt(1, canId);
 				
 				int delCount = delStmt.executeUpdate();
@@ -369,7 +368,7 @@ public class PendingOrderGUI implements ActionListener {
 			int compId= Integer.parseInt(pendingOrders[index][0]);
 			try {
 				String completedQuery = "UPDATE reservation SET is_completed = 1 WHERE id=?";
-				PreparedStatement completedStmt = con.prepareStatement(completedQuery);
+				PreparedStatement completedStmt = conn.prepareStatement(completedQuery);
 				completedStmt.setInt(1, compId);
 				
 				

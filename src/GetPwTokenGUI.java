@@ -35,8 +35,11 @@ public class GetPwTokenGUI implements ActionListener {
 	String tokenAdd = "";
 
 	JLabel success = new JLabel("");
-
-	GetPwTokenGUI() {
+	
+	Connection conn;
+	
+	GetPwTokenGUI(Connection con) {
+		conn = con;
 		frame.setSize(450, 250);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -127,7 +130,7 @@ public class GetPwTokenGUI implements ActionListener {
 
 		if (e.getSource() == loginBtn) {
 			frame.dispose();
-			LoginGUI loginPage = new LoginGUI();
+			LoginGUI loginPage = new LoginGUI(conn);
 		} else if (e.getSource() == getTokenBtn) {
 			String username = usernameText.getText();
 			if (username.length() < 3) {
@@ -139,10 +142,10 @@ public class GetPwTokenGUI implements ActionListener {
 			String selectQuery = "SELECT username, email_address FROM user where username=?";
 			String insertQuery = "INSERT INTO reset_pw_token (username, token) values (?, ?)";
 
-			Connection con = SQLConnect.connect();
+			
 
 			try {
-				PreparedStatement selectStmt = con.prepareStatement(selectQuery);
+				PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
 				selectStmt.setString(1, username);
 				ResultSet rs = selectStmt.executeQuery();
 
@@ -154,7 +157,7 @@ public class GetPwTokenGUI implements ActionListener {
 					return;
 				}
 
-				PreparedStatement insertStmt = con.prepareStatement(insertQuery);
+				PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
 				insertStmt.setString(1, username);
 				insertStmt.setString(2, token);
 
@@ -170,13 +173,8 @@ public class GetPwTokenGUI implements ActionListener {
 
 			// send the email
 			sendEmail(email, token, username);
-			try {
-				con.close();
-			} catch (Exception e3){
-				e3.printStackTrace();
-			}
 			frame.dispose();
-			ResetPasswordGUI resetPwPage = new ResetPasswordGUI(username);
+			ResetPasswordGUI resetPwPage = new ResetPasswordGUI(username, conn);
 
 		}
 
