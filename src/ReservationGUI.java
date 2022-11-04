@@ -18,10 +18,11 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.Border;
 
+
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.TimePicker;
 import java.time.*;
-
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ReservationGUI implements ActionListener {
@@ -133,6 +134,8 @@ public class ReservationGUI implements ActionListener {
 			String checkoutTimeString = checkoutTime.toString();
 			String note = noteText.getText();
 			
+			int reservTotalPrice = 0, reservTotalCost = 0;
+			
 			// check number of guests
 			if(guestNum<1 || guestNum > 10) {
 				success.setText("Only a number between 1 to 10 guests allowed!");
@@ -153,18 +156,42 @@ public class ReservationGUI implements ActionListener {
 				return;
 			}
 			
-			String insertQuery = "INSERT INTO reservation (guest_num, checkin_date, checkin_time, checkout_date, checkout_time, note, username, is_completed) "
-					+ "values (?,?,?,?,?,?,?,?)";
+
 			
 			
+			String insertQuery = "INSERT INTO reservation (guest_num, checkin_date, checkin_time, checkout_date, checkout_time, note, username, is_completed, total_price, total_cost) "
+					+ "values (?,?,?,?,?,?,?,?,?,?)";
 			
-			String query = "select * from reservation where ? BETWEEN checkin_date AND checkout_date OR ? BETWEEN checkin_date AND checkout_date "
+			String reservationQuery = "select * from reservation where ? BETWEEN checkin_date AND checkout_date OR ? BETWEEN checkin_date AND checkout_date "
 					+ "OR ? > checkin_date AND ? < checkout_date "
 					+ "OR ? < checkin_date AND ? > checkout_date;";
 			
+
+			try {
+				// calculate no. of days diff. between checkin and checkout dates
+				Duration diff = Duration.between(checkinDate.atStartOfDay(), checkoutDate.atStartOfDay());
+				long diffDays = diff.toDays();
+				
+				String financialQuery = "select * from financial where id=1;";
+				PreparedStatement stmt = conn.prepareStatement(financialQuery);
+				ResultSet rs = stmt.executeQuery();
+				
+				int reservPrice = rs.getInt("price");
+				int reservRentCost = rs.getInt("rent_cost");
+				int reservUtilitiesCost = rs.getInt("utilities_cost");
+				int reservGardeningCost = rs.getInt("gardening_cost");
+				int reservCleaningCost = rs.getInt("cleaning_cost");
+				
+				// calculate total price and costs
+				reservTotalPrice = (int) (reservPrice * diffDays);
+				reservTotalCost = (int) ((reservRentCost + reservUtilitiesCost + reservGardeningCost + reservCleaningCost) * diffDays);
+			} catch (Exception e3) {
+				e3.printStackTrace();
+			}
+			
 			try {
 				// check if booking is available/not overlap with other booking
-				PreparedStatement stmt = conn.prepareStatement(query);
+				PreparedStatement stmt = conn.prepareStatement(reservationQuery);
 				stmt.setString(1, checkoutDateString);
 				stmt.setString(2, checkinDateString);
 				stmt.setString(3, checkinDateString);
@@ -191,6 +218,10 @@ public class ReservationGUI implements ActionListener {
 				insertStmt.setString(6, note);
 				insertStmt.setString(7, username);
 				insertStmt.setInt(8, 0);
+				insertStmt.setInt(9, reservTotalPrice);
+				insertStmt.setInt(10, reservTotalCost);
+				
+				
 				int rowCount = insertStmt.executeUpdate();
 				if(rowCount ==0) {
 					success.setText("execute update error");
@@ -202,16 +233,12 @@ public class ReservationGUI implements ActionListener {
 				e3.printStackTrace();
 			}
 			success.setText("Successful reservation!");
-			// opening a frame asking user if they want reciept
-			Object[] options = { "Yes, please", "No, thanks"};
-			int popup = JOptionPane.showOptionDialog(frame, "Would you like a reciept of your reservation? ",
-					"", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-					options[1]);
-			if(popup == JOptionPane.YES_OPTION) {
-				// send email
-			} 
 			frame.dispose();
 			ThankYouGUI thankyou_page = new ThankYouGUI(username, conn);
+			
+			
+			
+			
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI(conn);
@@ -221,3 +248,15 @@ public class ReservationGUI implements ActionListener {
 	}
 
 }
+
+// plan of automatically determining the price of a reservation from guest perspective.
+// render UI
+// user input reservation info. 
+// user press book button
+
+// get user input and store into a variable(maybe change data type)
+// program validates all information
+// valid case: calculate how many days
+// query statement of the price and cost from financial
+// multiply no. of days * current price
+// insert 
