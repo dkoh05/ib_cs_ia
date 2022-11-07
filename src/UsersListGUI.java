@@ -1,9 +1,14 @@
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,6 +33,15 @@ public class UsersListGUI implements ActionListener {
 	private JButton usersListBtn = new JButton("USERS LIST");
 	private JButton logoutBtn = new JButton("LOGOUT");
 	
+	JLabel fullNameLabel = new JLabel("Full Name: ");
+	JLabel emailLabel = new JLabel("Email Address: ");
+	JLabel phoneNumLabel = new JLabel("Phone Number: ");
+	
+	JTextField fullNameText = new JTextField();
+	JTextField emailText = new JTextField();
+	JTextField phoneNumText = new JTextField();
+	
+	
 	String[][] usersList = new String[1000][4];
 	String[] columnNames = {"Username", "Full Name", "Email Address", "Phone Number"};
 	JTable table = new JTable(usersList, columnNames);
@@ -37,9 +51,11 @@ public class UsersListGUI implements ActionListener {
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
 	JLabel searchTitle = new JLabel("Search for a specific value: ");
 	JTextField searchBar = new JTextField();
+
+	JButton saveBtn = new JButton("SAVE");
+	JLabel success = new JLabel();
 	
-	JButton searchBtn = new JButton("SEARCH ACCOUNTS");
-	
+	int index;
 	Connection conn;
 	
 	UsersListGUI(Connection con) {
@@ -77,6 +93,29 @@ public class UsersListGUI implements ActionListener {
 		
 		searchBar.setBounds(300, 90, 700, 25);
 		panel.add(searchBar);
+		
+		fullNameLabel.setBounds(100, 600, 150, 25);
+		fullNameText.setBounds(200, 600, 150, 25);
+		panel.add(fullNameLabel);
+		panel.add(fullNameText);
+		
+		emailLabel.setBounds(400, 600, 150, 25);
+		emailText.setBounds(500, 600, 150, 25);
+		panel.add(emailLabel);
+		panel.add(emailText);
+		
+		phoneNumLabel.setBounds(700, 600, 150, 25);
+		phoneNumText.setBounds(800, 600, 150, 25);
+		panel.add(phoneNumLabel);
+		panel.add(phoneNumText);
+		
+		saveBtn.setBounds(100, 650, 150, 25);
+		saveBtn.addActionListener(this);
+		panel.add(saveBtn);
+		
+		success.setBounds(100, 700, 250, 25);
+		panel.add(success);
+		
 		
 
 		String query = "SELECT * from user;";
@@ -134,10 +173,24 @@ public class UsersListGUI implements ActionListener {
 			}
 
 		});
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				index = table.getSelectedRow();
+				if (usersList[index][0] != null) {
+					fullNameText.setText(usersList[index][1]);
+					emailText.setText(usersList[index][2]);
+					phoneNumText.setText(usersList[index][3]);
+				} else {
+					fullNameText.setText(null);
+					emailText.setText(null);
+					phoneNumText.setText(null);
+
+				}
+			}
+		});
 		sp.setBounds(100, 150, 900, 400);
 		panel.add(sp);
-
-//		searchBtn.setBounds(null);
+		
 		
 		
 		frame.setVisible(true);
@@ -157,8 +210,40 @@ public class UsersListGUI implements ActionListener {
 		} else if (e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI(conn);
-		} 
-		
-		// search id, username, note
+		} else if(e.getSource() == saveBtn && usersList[index][0]!= null) {
+			
+			String username = usersList[index][0];
+			String fullName = fullNameText.getText();
+			String email = emailText.getText();
+			String phoneNum = phoneNumText.getText();
+			
+			try {
+				
+				String updateQuery = "UPDATE user set full_name = ?, email_address = ?, phone_num = ? where username=?;";	
+
+				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
+				updateStmt.setString(1, fullName);
+				updateStmt.setString(2, email);
+				updateStmt.setString(3, phoneNum);
+				updateStmt.setString(4, username);
+				
+				int updateCount = updateStmt.executeUpdate();
+				if (updateCount == 0) {
+					success.setText("Nothing has been updated!");
+					return;
+				}
+
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+
+			success.setText("Your reservation data has been changed.");
+			// update pendingOrder so that updated data displays on table for admin
+
+			usersList[index][1] = fullName;
+			usersList[index][2] = email;
+			usersList[index][3] = phoneNum;
+			table.repaint(); // update data on the UI
+		}
 	}
 }

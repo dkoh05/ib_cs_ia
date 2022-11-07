@@ -63,11 +63,10 @@ public class OrderHistoryGUI implements ActionListener{
 	JLabel noteLabel = new JLabel("Special Requests: ");
 	JTextField noteText = new JTextField();
 
-	JButton saveBtn = new JButton("SAVE EDITS");
 	
-	String[][] allOrders = new String[1000][8];
+	String[][] allOrders = new String[1000][10];
 	String[] columnNames = {"ID", "Username", "No. Of Guests", "Check-in Date", "Check-in Time", "Check-out Date",
-			"Check-out Time", "Note" };
+			"Check-out Time", "Note", "Total Price", "Total Cost"};
 	JTable table = new JTable(allOrders, columnNames);
 
 	TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(table.getModel());
@@ -147,9 +146,6 @@ public class OrderHistoryGUI implements ActionListener{
 		noteText.setBounds(225, 650, 750, 25);
 		panel.add(noteLabel);
 		panel.add(noteText);
-
-		saveBtn.setBounds(100, 700, 150, 25);
-		panel.add(saveBtn);
 		
 		searchTitle.setBounds(100, 90, 175, 25);
 		panel.add(searchTitle);
@@ -173,7 +169,9 @@ public class OrderHistoryGUI implements ActionListener{
 				String checkoutDate = rs.getString("checkout_date");
 				String checkoutTime = rs.getString("checkout_time");
 				String note = rs.getString("note");
-				String[] row = { id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note };
+				String totalPrice = rs.getString("total_price");
+				String totalCost = rs.getString("total_cost");
+				String[] row = { id, username, guestNum, checkinDate, checkinTime, checkoutDate, checkoutTime, note, totalPrice, totalCost};
 				allOrders[count] = row;
 				count++;
 			}
@@ -271,57 +269,6 @@ public class OrderHistoryGUI implements ActionListener{
 		} else if(e.getSource() == logoutBtn) {
 			frame.dispose();
 			LoginGUI loginPage = new LoginGUI(conn);
-		} else if(e.getSource() == saveBtn && allOrders[index][0] != null) {
-			int id = Integer.parseInt(allOrders[index][0]);
-			int guestNum = (Integer) guestNumSpinner.getValue();
-			LocalDate checkinDate = checkinDatePicker.getDate();
-			String checkinDateString = checkinDate.toString();
-			LocalTime checkinTime = checkinTimePicker.getTime();
-			String checkinTimeString = checkinTime.toString();
-			LocalDate checkoutDate = checkoutDatePicker.getDate();
-			String checkoutDateString = checkoutDate.toString();
-			LocalTime checkoutTime = checkoutTimePicker.getTime();
-			String checkoutTimeString = checkoutTime.toString();
-			String note = noteText.getText();
-			try {
-				String updateQuery = "UPDATE reservation set username = ?,"
-						+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
-						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";
-
-				
-				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-				
-
-				
-				updateStmt.setString(1, usernameText.getText());
-				updateStmt.setInt(2, guestNum);
-				updateStmt.setString(3, checkinDateString);
-				updateStmt.setString(4, checkinTimeString);
-				updateStmt.setString(5, checkoutDateString);
-				updateStmt.setString(6, checkoutTimeString);
-				updateStmt.setString(7, note);
-				updateStmt.setInt(8, id);
-				
-				int updateCount = updateStmt.executeUpdate();
-				if (updateCount == 0) {
-					success.setText("Nothing has been updated!");
-					return;
-				}
-
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-			
-			success.setText("Your reservation data has been changed.");
-			// update pendingOrder so that updated data displays on table for admin
-
-			allOrders[index][2] = Integer.toString(guestNum);
-			allOrders[index][3] = checkinDateString;
-			allOrders[index][4] = checkinTimeString;
-			allOrders[index][5] = checkoutDateString;
-			allOrders[index][6] = checkoutTimeString;
-			allOrders[index][7] = note;
-			table.repaint(); // update data on the UI
-		}
+		} 
 	}
 }

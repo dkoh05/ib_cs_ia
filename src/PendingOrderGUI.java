@@ -1,10 +1,11 @@
-import java.awt.Color;
+	import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -80,6 +81,8 @@ public class PendingOrderGUI implements ActionListener {
 	JScrollPane sp = new JScrollPane(table);
 	JLabel searchTitle = new JLabel("Search for a specific value: ");
 	JTextField searchBar = new JTextField();
+	
+	int updatedDayDiff = 0;
 
 	JLabel success = new JLabel();
 
@@ -307,10 +310,32 @@ public class PendingOrderGUI implements ActionListener {
 			LocalTime checkoutTime = checkoutTimePicker.getTime();
 			String checkoutTimeString = checkoutTime.toString();
 			String note = noteText.getText();
+			
+			int reservTotalPrice = 0, reservTotalCost = 0;
 			try {
+				Duration diff = Duration.between(checkinDate.atStartOfDay(), checkoutDate.atStartOfDay());
+				long diffDays = diff.toDays();
+				System.out.println(diffDays);
+
+				String financialQuery = "select * from financial where id=1;";
+				PreparedStatement stmt = conn.prepareStatement(financialQuery);
+				ResultSet rs = stmt.executeQuery();
+
+				int reservPrice = rs.getInt("price");
+				int reservRentCost = rs.getInt("rent_cost");
+				int reservUtilitiesCost = rs.getInt("utilities_cost");
+				int reservGardeningCost = rs.getInt("gardening_cost");
+				int reservCleaningCost = rs.getInt("cleaning_cost");
+
+				// calculate total price and costs
+				reservTotalPrice = (int) (reservPrice * diffDays);
+				reservTotalCost = (int) ((reservRentCost + reservUtilitiesCost + reservGardeningCost
+						+ reservCleaningCost) * diffDays);
+				
 				String updateQuery = "UPDATE reservation set username = ?,"
 						+ "guest_num = ?, checkin_date = ?, checkin_time = ?, "
-						+ "checkout_date = ?, checkout_time = ?, note = ? WHERE id=?";				
+						+ "checkout_date = ?, checkout_time = ?, note = ?, total_price = ?, total_cost = ? WHERE id=?";	
+
 				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
 				updateStmt.setString(1, usernameText.getText());
 				updateStmt.setInt(2, guestNum);
@@ -319,16 +344,20 @@ public class PendingOrderGUI implements ActionListener {
 				updateStmt.setString(5, checkoutDateString);
 				updateStmt.setString(6, checkoutTimeString);
 				updateStmt.setString(7, note);
-				updateStmt.setInt(8, id);
+				updateStmt.setInt(8, reservTotalPrice);
+				updateStmt.setInt(9, reservTotalCost);
+				updateStmt.setInt(10, id);
+				
 				int updateCount = updateStmt.executeUpdate();
 				if (updateCount == 0) {
 					success.setText("Nothing has been updated!");
 					return;
 				}
+
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
-			
+
 			success.setText("Your reservation data has been changed.");
 			// update pendingOrder so that updated data displays on table for admin
 
@@ -338,20 +367,28 @@ public class PendingOrderGUI implements ActionListener {
 			pendingOrders[index][5] = checkoutDateString;
 			pendingOrders[index][6] = checkoutTimeString;
 			pendingOrders[index][7] = note;
+			pendingOrders[index][8] = Integer.toString(reservTotalPrice);
+			pendingOrders[index][9] = Integer.toString(reservTotalCost);
+			
+			
 			table.repaint(); // update data on the UI
-		} else if(e.getSource() == cancelBtn && pendingOrders[index][0]!=null) {
+
+		} else if (e.getSource() == cancelBtn && pendingOrders[index][0] != null) {
 			int canId = Integer.parseInt(pendingOrders[index][0]);
 			try {
-				String delQuery = "DELETE FROM reservation WHERE id=?";
-				PreparedStatement delStmt = conn.prepareStatement(delQuery);
-				delStmt.setInt(1, canId);
-				
-				int delCount = delStmt.executeUpdate();
-				if (delCount == 0) {
-					success.setText("Nothing has been updated!");
-					return;
-				}				
+				if(pendingOrders[index][0]!= null) {
+					String delQuery = "DELETE FROM reservation WHERE id=?";
+					PreparedStatement delStmt = conn.prepareStatement(delQuery);
+					delStmt.setInt(1, canId);
+					
+					int delCount = delStmt.executeUpdate();
+					if (delCount == 0) {
+						success.setText("Nothing has been updated!");
+						return;
+					}	
+				}
 			} catch(Exception e2) {
+				success.setText("Nothing has been updated.");
 				e2.printStackTrace();
 			}
 			success.setText("You have deleted reservation ID: " + canId);
