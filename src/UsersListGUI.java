@@ -237,7 +237,7 @@ public class UsersListGUI implements ActionListener {
 				e2.printStackTrace();
 			}
 
-			success.setText("Your reservation data has been changed.");
+			success.setText("Your data has been changed.");
 			// update pendingOrder so that updated data displays on table for admin
 
 			usersList[index][1] = fullName;

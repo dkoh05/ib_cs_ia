@@ -4,11 +4,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
-//		PendingOrderGUI pending = new PendingOrderGUI();
+//		make a connection with SQL database and display the login page
 		Connection con = SQLConnect.connect();
-//		LoginGUI login = new LoginGUI(con);
-		UsersListGUI users = new UsersListGUI(con);
-		
+		LoginGUI login = new LoginGUI(con);
 
 	}
 

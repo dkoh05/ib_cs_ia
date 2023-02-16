@@ -124,7 +124,7 @@ public class LoginGUI implements ActionListener {
 					}
 					success.setText("Successful login!");
 				} else {
-					success.setText("Failed login! Please try again.");
+					success.setText("Wrong login! Please try again.");
 					return;
 				}
 			} catch (SQLException e1) {

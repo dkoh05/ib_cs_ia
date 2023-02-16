@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
@@ -25,8 +26,8 @@ public class ResetPasswordGUI implements ActionListener{
 	JLabel newPwLabel = new JLabel("New Password: ");
 	JLabel confirmPwLabel = new JLabel("Confirm Password: ");
 	JTextField tokenText = new JTextField();
-	JTextField newPwText = new JTextField();
-	JTextField confirmPwText = new JTextField();
+	JTextField newPwText = new JPasswordField(20);
+	JTextField confirmPwText = new JPasswordField();
 	JLabel success = new JLabel();
 
 	JButton resetPwBtn = new JButton("RESET PASSWORD");
