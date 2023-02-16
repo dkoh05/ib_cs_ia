@@ -1,4 +1,7 @@
-# How to run and open the code (assuming you're using Eclipse)
+### Home Rental Booking System
+## This is a project I've built for both guests and my mother to interact with. For guests, they can book reservations for my mother's holiday home. For my mother, she can digitally manage those reservations. 
+
+## How to run and open the code (assuming you're using Eclipse)
 
 ### 1. Clone the code from Github
 ### 2. Open Eclipse (assuming they have Eclipse downloaded)
