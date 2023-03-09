@@ -165,7 +165,7 @@ public class RegisterGUI implements ActionListener{
 			try {
 				PreparedStatement stmt = conn.prepareStatement(query); // create a statement variable to store the query
 				stmt.setString(1, username); // replace parameters
-				ResultSet rs = stmt.executeQuery(); //  values into into database
+				ResultSet rs = stmt.executeQuery(); //  values into database
 				// check if there are duplicate accounts
 				int count = 0;
 				while(rs.next()) { // retrieve all rows in rs

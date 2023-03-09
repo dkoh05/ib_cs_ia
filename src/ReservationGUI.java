@@ -139,12 +139,12 @@ public class ReservationGUI implements ActionListener {
 				success.setText("Only a number between 1 to 10 guests allowed!");
 				return;
 			}
-			// validate if check-in time is greater than check-out time
+			// validate if check-in date is greater than check-out date	
 			if ((checkoutDate.compareTo(checkinDate)) <= 0) {
 				success.setText("Incorrect dates! ");
 				return;
 			}
-			// validate if check-in date is less than check-out time
+			// validate if check-in time is less than check-out time
 			if (checkinTime.compareTo(LocalTime.parse("14:00:00")) < 0) {
 				success.setText("Check-in time is incorrect. Please enter a time later than 2PM.");
 				return;

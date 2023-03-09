@@ -18,7 +18,7 @@ import javax.swing.JButton;
 
 public class LoginGUI implements ActionListener {
 	JLabel title = new JLabel("Welcome to Duyen's Home Booking! Please log-in to your account!");
-	private static JLabel usernameLabel = new JLabel("Username:");
+	JLabel usernameLabel = new JLabel("Username:");
 	JTextField userText = new JTextField(20);
 	JLabel passwordLabel = new JLabel("Password:");
 	JTextField passwordText = new JPasswordField(20);
