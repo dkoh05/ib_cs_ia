@@ -1,7 +1,7 @@
 ### Home Rental Booking System
-## This is a project I've built for both guests and my mother to interact with. For guests, they can book reservations for my mother's holiday home. For my mother, she can digitally manage those reservations. 
+## cross-UI between reservation management for owner and reservation booking UI for guests
 
-## How to run and open the code (assuming you're using Eclipse)
+## Program set-up instructions
 
 ### 1. Clone the code from Github
 ### 2. Open Eclipse (assuming they have Eclipse downloaded)
